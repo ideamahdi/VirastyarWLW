@@ -32,36 +32,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SCICT.NLP.Morphology.Inflection, Version=1.3.1.32997, Culture=neutral, PublicKeyToken=ff2cf56caa65669b, processorArchitecture=MSIL">
-      <HintPath>D:\Mehrdad\Works\Noor\Virastyar\virastyar@svn\Projects\SpellChecker\trunk\Lib\SCICT.NLP.Morphology.Inflection.dll</HintPath>
+    <Reference Include="SCICT.NLP.TextProofing.SpellChecker">
+      <HintPath>..\ExternalLibs\SCICT.NLP.TextProofing.SpellChecker.dll</HintPath>
     </Reference>
-    <Reference Include="SCICT.NLP.Morphology.Inflection.Conjugation, Version=1.3.1.32993, Culture=neutral, PublicKeyToken=ff2cf56caa65669b, processorArchitecture=MSIL">
-      <HintPath>D:\Mehrdad\Works\Noor\Virastyar\virastyar@svn\Projects\SpellChecker\trunk\Lib\SCICT.NLP.Morphology.Inflection.Conjugation.dll</HintPath>
+    <Reference Include="SCICT.PersianTools">
+      <HintPath>..\ExternalLibs\SCICT.PersianTools.dll</HintPath>
     </Reference>
-    <Reference Include="SCICT.NLP.TextProofing.SpellChecker, Version=1.3.1.32999, Culture=neutral, PublicKeyToken=ff2cf56caa65669b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Mehrdad\Works\Noor\Virastyar\virastyar@svn\Projects\SpellChecker\trunk\Lib\SCICT.NLP.TextProofing.SpellChecker.dll</HintPath>
+    <Reference Include="SCICT.Utility">
+      <HintPath>..\ExternalLibs\SCICT.Utility.dll</HintPath>
     </Reference>
-    <Reference Include="SCICT.NLP.Utility.StringDistance, Version=1.3.1.32997, Culture=neutral, PublicKeyToken=ff2cf56caa65669b, processorArchitecture=MSIL">
-      <HintPath>D:\Mehrdad\Works\Noor\Virastyar\virastyar@svn\Projects\SpellChecker\trunk\Lib\SCICT.NLP.Utility.StringDistance.dll</HintPath>
-    </Reference>
-    <Reference Include="SCICT.NLP.Utility.WordContainer, Version=1.3.1.32996, Culture=neutral, PublicKeyToken=ff2cf56caa65669b, processorArchitecture=MSIL">
-      <HintPath>D:\Mehrdad\Works\Noor\Virastyar\virastyar@svn\Projects\SpellChecker\trunk\Lib\SCICT.NLP.Utility.WordContainer.dll</HintPath>
-    </Reference>
-    <Reference Include="SCICT.NLP.Utility.WordGenerator, Version=1.3.1.32996, Culture=neutral, PublicKeyToken=ff2cf56caa65669b, processorArchitecture=MSIL">
-      <HintPath>D:\Mehrdad\Works\Noor\Virastyar\virastyar@svn\Projects\SpellChecker\trunk\Lib\SCICT.NLP.Utility.WordGenerator.dll</HintPath>
-    </Reference>
-    <Reference Include="SCICT.PersianTools, Version=1.3.1.32990, Culture=neutral, PublicKeyToken=ff2cf56caa65669b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Mehrdad\Works\Noor\Virastyar\virastyar@svn\Projects\SpellChecker\trunk\Lib\SCICT.PersianTools.dll</HintPath>
-    </Reference>
-    <Reference Include="SCICT.Utility, Version=1.3.1.32992, Culture=neutral, PublicKeyToken=ff2cf56caa65669b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Mehrdad\Works\Noor\Virastyar\virastyar@svn\Projects\SpellChecker\trunk\Lib\SCICT.Utility.dll</HintPath>
-    </Reference>
-    <Reference Include="SCICT.VirastyarInlineVerifiers, Version=1.3.1.33003, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Mehrdad\Works\Noor\Virastyar\virastyar@svn\Projects\SpellChecker\trunk\Lib\SCICT.VirastyarInlineVerifiers.dll</HintPath>
+    <Reference Include="SCICT.VirastyarInlineVerifiers">
+      <HintPath>..\ExternalLibs\SCICT.VirastyarInlineVerifiers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -1,0 +1,589 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SCICT.NLP.Utility.Transliteration</name>
+    </assembly>
+    <members>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMapping">
+            <summary>
+            Holds all possible mapping information for a letter.
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMapping.#ctor(System.Char,SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMapping"/> class.
+            </summary>
+            <param name="letter">The letter which this instance will hold its mappings.</param>
+            <param name="values">Mapping values for the given letter.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMapping.#ctor(System.Char,System.Boolean,SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMapping"/> class.
+            </summary>
+            <param name="letter">The letter which this instance will hold its mappings.</param>
+            <param name="caseSensitive">if set to <c>true</c> [case sensitive].</param>
+            <param name="values">Mapping values for the given letter.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMapping.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.CharacterMapping.Letter">
+            <summary>
+            Gets the letter which this instance holds its mapping information.
+            </summary>
+            <value>The letter.</value>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.CharacterMapping.IsCaseSensitive">
+            <summary>
+            Gets a value indicating whether this instance is case sensitive.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is case sensitive; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.CharacterMapping.Values">
+            <summary>
+            Gets the corresponding mapping information of the <see cref="P:SCICT.NLP.Utility.Transliteration.KNN.CharacterMapping.Letter"/>
+            </summary>
+            <value>The values.</value>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo">
+            <summary>
+            Defines mapping information for a character. These information are used in conversion phase. 
+            </summary>
+        </member>
+        <member name="F:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.EmptyChar">
+            <summary>
+            Empty character which is used by the classes of this namespace.
+            </summary>
+        </member>
+        <member name="F:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.EmptyString">
+            <summary>
+            Empty string which is used by the classes of this namespace.
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo"/> class.
+            </summary>
+            <param name="value">The character which this instance holds its mapping information.</param>
+            <param name="relativeIndex">The relative index of this instance. Instances with high value of <see cref="!:relativeIndex"/> 
+            has less priority in generation phase.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.#ctor(System.String,System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo"/> class.
+            </summary>
+            <param name="value">The character which this instance holds its mapping information.</param>
+            <param name="relativeIndex">The relative index of this instance. Instances with high value of <see cref="!:relativeIndex"/> 
+            has less priority in generation phase.</param>
+            <param name="name">The name of this instance.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.#ctor(System.String,System.Char)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo"/> class.
+            </summary>
+            <param name="value">The character which this instance holds its mapping information.</param>
+            <param name="postfix">The postfix character, if any. 
+            For example: 'h' is a possible postfix for 's' character in Persian transliteration.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.#ctor(System.String,System.Char,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo"/> class.
+            </summary>
+            <param name="value">The character which this instance holds its mapping information.</param>
+            <param name="postfix">The postfix character, if any. 
+            For example: 'h' is a possible postfix for 's' character in Persian transliteration.</param>
+            <param name="name">The name of this instance.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.#ctor(System.String,SCICT.NLP.Utility.Transliteration.KNN.TokenPosition,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo"/> class.
+            </summary>
+            <param name="value">The character which this instance holds its mapping information.</param>
+            <param name="position">The position.</param>
+            <param name="relativeIndex">The relative index of this instance. Instances with high value of <see cref="!:relativeIndex"/> 
+            has less priority in generation phase.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.#ctor(System.String,SCICT.NLP.Utility.Transliteration.KNN.TokenPosition,System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo"/> class.
+            </summary>
+            <param name="value">The character which this instance holds its mapping information.</param>
+            <param name="position">The position.</param>
+            <param name="relativeIndex">The relative index of this instance. Instances with high value of <see cref="!:relativeIndex"/> 
+            has less priority in generation phase.</param>
+            <param name="name">The name of this instance.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.#ctor(System.String,System.Char,SCICT.NLP.Utility.Transliteration.KNN.TokenPosition,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo"/> class.
+            </summary>
+            <param name="value">The character which this instance holds its mapping information.</param>
+            <param name="postfix">The postfix character, if any. 
+            For example: 'h' is a possible postfix for 's' character in Persian transliteration.</param>
+            <param name="position">The position.</param>
+            <param name="relativeIndex">The relative index of this instance. Instances with high value of <see cref="!:relativeIndex"/> 
+            has less priority in generation phase.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.#ctor(System.String,System.Char,SCICT.NLP.Utility.Transliteration.KNN.TokenPosition,System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo"/> class.
+            </summary>
+            <param name="value">The character which this instance holds its mapping information.</param>
+            <param name="postfix">The postfix character, if any. 
+            For example: 'h' is a possible postfix for 's' character in Persian transliteration.</param>
+            <param name="position">The position.</param>
+            <param name="relativeIndex">The relative index of this instance. Instances with high value of <see cref="!:relativeIndex"/> 
+            has less priority in generation phase.</param>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            	<c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.NullReferenceException">
+            The <paramref name="obj"/> parameter is null.
+            </exception>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.System#IComparable{SCICT#NLP#Utility#Transliteration#KNN#CharacterMappingInfo}#CompareTo(SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo)">
+            <summary>
+            Compares the current object with another object of the same type.
+            </summary>
+            <param name="other">An object to compare with this object.</param>
+            <returns>
+            A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings:
+            Value
+            Meaning
+            Less than zero
+            This object is less than the <paramref name="other"/> parameter.
+            Zero
+            This object is equal to <paramref name="other"/>.
+            Greater than zero
+            This object is greater than <paramref name="other"/>.
+            </returns>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.Value">
+            <summary>
+            Gets or sets The character which this instance holds its mapping information.
+            </summary>
+            <value>The character which this instance holds its mapping information.</value>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.Postfix">
+            <summary>
+            Gets or sets the postfix.
+            </summary>
+            <value>The postfix character, if any.
+            For example: 'h' is a possible postfix for 's' character in Persian transliteration.</value>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.Position">
+            <summary>
+            Gets or sets the position.
+            </summary>
+            <value>The position.</value>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.RelativeIndex">
+            <summary>
+            Gets or sets the relative index of this instance.
+            </summary>
+            <value>The relative index of this instance. Instances with high value of <see cref="P:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.RelativeIndex"/> 
+            has less priority in generation phase.</value>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.CharacterMappingInfo.Name">
+            <summary>
+            Gets or sets the name of this instance.
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.Extensions">
+            <summary>
+            Useful Extension methods
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.Extensions.Update(System.Collections.Generic.List{SCICT.NLP.Utility.Transliteration.KNN.PinglishString},System.Char,System.Collections.Generic.List{System.String})">
+            <summary>
+            
+            </summary>
+            <param name="list"></param>
+            <param name="englishLetter"></param>
+            <param name="persianLetters">Must be sorted based on their weights</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.Extensions.RemoveDuplicates(System.Collections.Generic.List{SCICT.NLP.Utility.Transliteration.KNN.PinglishString})">
+            <summary>
+            Remove duplicate elements within the given list.
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.Extensions.Compare(System.Char,System.Char,System.Boolean)">
+            <summary>
+            Compares the specified characters.
+            </summary>
+            <param name="caseSensitive">if set to <c>true</c> [case sensitive].</param>
+            <returns></returns>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.TokenPosition">
+            <summary>
+            Represents the position of a character in a word
+            </summary>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.PinglishStringNormalizationOptions">
+            <summary>
+            Represents options in PinglishString normalization.
+            </summary>
+        </member>
+        <member name="F:SCICT.NLP.Utility.Transliteration.KNN.PinglishStringNormalizationOptions.None">
+            <summary>
+            Use the default settings
+            </summary>
+        </member>
+        <member name="F:SCICT.NLP.Utility.Transliteration.KNN.PinglishStringNormalizationOptions.LowercaseEnglishLetters">
+            <summary>
+            Lowercase English letters
+            </summary>
+        </member>
+        <member name="F:SCICT.NLP.Utility.Transliteration.KNN.PinglishStringNormalizationOptions.NoErabPersianLetters">
+            <summary>
+            No Erab in Persian letters
+            </summary>
+        </member>
+        <member name="F:SCICT.NLP.Utility.Transliteration.KNN.PinglishStringNormalizationOptions.NoDuplicatesEntries">
+            <summary>
+            No duplicate entries
+            </summary>
+        </member>
+        <member name="F:SCICT.NLP.Utility.Transliteration.KNN.PinglishStringNormalizationOptions.SortBasedOnEnglishLetters">
+            <summary>
+            Sort entries
+            </summary>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.PinglishConverterUtils">
+            <summary>
+            Generic methods used by other classes of this library.
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.PinglishConverterUtils.MergePinglishStringLists(System.Collections.Generic.List{SCICT.NLP.Utility.Transliteration.KNN.PinglishString},System.Collections.Generic.List{SCICT.NLP.Utility.Transliteration.KNN.PinglishString},SCICT.NLP.Utility.Transliteration.KNN.PinglishStringNormalizationOptions)">
+            <summary>
+            Merges the two PinglishString lists. 
+            <returns>A reference to the merged list.</returns>
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.PinglishConverterUtils.LoadPinglishStrings(System.String)">
+            <summary>
+            Loads a serialized list of PinglishString from a file.
+            Note: May throws Exception
+            </summary>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.PinglishConverterUtils.SavePinglishStrings(System.Collections.Generic.List{SCICT.NLP.Utility.Transliteration.KNN.PinglishString},System.String)">
+            <summary>
+            Serialize a list of PinglishString into the given file.
+            </summary>
+            <returns>True if the operation was successful, and false otherwise.</returns>
+        </member>
+        <member name="F:SCICT.NLP.Utility.Transliteration.KNN.PinglishConverterUtils.PreprocessElementInfoSeparators">
+            <summary>
+            Each row of a preprocess file has more that 1 column, each column is separated by these characters.
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.PinglishConverterUtils.LoadPreprocessElements(System.String)">
+            <summary>
+            Loads Pinglish preprocess elements from a file.
+            </summary>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.PinglishMapping">
+            <summary>
+            Instance of this class will learns the mappings from sample dataset.
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.PinglishMapping.SuggestWords(SCICT.NLP.Utility.Transliteration.ResultWord,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="pinglishWord"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.PinglishMapping.Union(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})">
+            <summary>
+            
+            </summary>
+            <remarks>Affects the first parameter</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.PinglishMapping.Union(System.Collections.Generic.Dictionary{System.String,System.Double},System.Collections.Generic.Dictionary{System.String,System.Double})">
+            <summary>
+            
+            </summary>
+            <remarks>Affects the first parameter</remarks>
+            <returns></returns>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.PinglishString">
+            <summary>
+            Represents a Pinglish word, and its corresponding Persian word
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.PinglishString.Append(System.String,System.Char)">
+            <summary>
+            Appends the specified letters to this instance.
+            </summary>
+            <param name="persianLetter">The Persian letter.</param>
+            <param name="englishLetter">The English letter.</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.PinglishString.Clone">
+            <summary>
+            Clones this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.PinglishString.PersianLetters">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.PinglishString.EnglishLetters">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.PinglishString.PersianString">
+            <summary>
+            Gets the Persian string.
+            </summary>
+            <value>The Persian string.</value>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.PinglishString.EnglishString">
+            <summary>
+            Gets the english string.
+            </summary>
+            <value>The english string.</value>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.PinglishString.Length">
+            <summary>
+            Gets the length.
+            </summary>
+            <value>The length.</value>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.PinglishString.Item(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="index"></param>
+            <returns>
+            Returns a KeyValuePair: 
+            Key is the English character, and Value is its Persian equivalent.
+            </returns>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.PinglishStringEqualityComparer">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.PreprocessElementInfo">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.KNN.SingleValueCharMappings">
+            <summary>
+            One-to-one corresponding letters in transliteration.
+            </summary>
+        </member>
+        <member name="F:SCICT.NLP.Utility.Transliteration.KNN.SingleValueCharMappings.s_singleValueCharMap">
+            <summary>
+            A dictionary contains all single value mappings
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.SingleValueCharMappings.#cctor">
+            <summary>
+            Initializes the <see cref="T:SCICT.NLP.Utility.Transliteration.KNN.SingleValueCharMappings"/> class.
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.KNN.SingleValueCharMappings.TryGetValue(System.Char)">
+            <summary>
+            Retrieves a mapping Persian letter for the given English character.
+            </summary>
+            <param name="ch"></param>
+            <returns>The mapping letter, if it contains an entry for the give character;
+            otherwise <value>null</value></returns>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.KNN.SingleValueCharMappings.SingleValueCharacters">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2">
+            <summary>
+            Priority queue based on binary heap,
+            Elements with minimum priority dequeued first
+            </summary>
+            <typeparam name="TPriority">Type of priorities</typeparam>
+            <typeparam name="TValue">Type of values</typeparam>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.#ctor">
+            <summary>
+            Initializes a new instance of priority queue with default initial capacity and default priority comparer
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of priority queue with specified initial capacity and default priority comparer
+            </summary>
+            <param name="capacity">initial capacity</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.#ctor(System.Int32,System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Initializes a new instance of priority queue with specified initial capacity and specified priority comparer
+            </summary>
+            <param name="capacity">initial capacity</param>
+            <param name="comparer">priority comparer</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.#ctor(System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Initializes a new instance of priority queue with default initial capacity and specified priority comparer
+            </summary>
+            <param name="comparer">priority comparer</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}})">
+            <summary>
+            Initializes a new instance of priority queue with specified data and default priority comparer
+            </summary>
+            <param name="data">data to be inserted into priority queue</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}},System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Initializes a new instance of priority queue with specified data and specified priority comparer
+            </summary>
+            <param name="data">data to be inserted into priority queue</param>
+            <param name="comparer">priority comparer</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.MergeQueues(SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue{`0,`1},SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue{`0,`1})">
+            <summary>
+            Merges two priority queues
+            </summary>
+            <param name="pq1">first priority queue</param>
+            <param name="pq2">second priority queue</param>
+            <returns>resultant priority queue</returns>
+            <remarks>
+            source priority queues must have equal comparers,
+            otherwise <see cref="T:System.InvalidOperationException"/> will be thrown
+            </remarks>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.MergeQueues(SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue{`0,`1},SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue{`0,`1},System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Merges two priority queues and sets specified comparer for resultant priority queue
+            </summary>
+            <param name="pq1">first priority queue</param>
+            <param name="pq2">second priority queue</param>
+            <param name="comparer">comparer for resultant priority queue</param>
+            <returns>resultant priority queue</returns>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.Enqueue(`0,`1)">
+            <summary>
+            Enqueues element into priority queue
+            </summary>
+            <param name="priority">element priority</param>
+            <param name="value">element value</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.Dequeue">
+            <summary>
+            Dequeues element with minimum priority and return its priority and value as <see cref="T:System.Collections.Generic.KeyValuePair`2"/> 
+            </summary>
+            <returns>priority and value of the dequeued element</returns>
+            <remarks>
+            Method throws <see cref="T:System.InvalidOperationException"/> if priority queue is empty
+            </remarks>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.DequeueValue">
+            <summary>
+            Dequeues element with minimum priority and return its value
+            </summary>
+            <returns>value of the dequeued element</returns>
+            <remarks>
+            Method throws <see cref="T:System.InvalidOperationException"/> if priority queue is empty
+            </remarks>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.Peek">
+            <summary>
+            Returns priority and value of the element with minimun priority, without removing it from the queue
+            </summary>
+            <returns>priority and value of the element with minimum priority</returns>
+            <remarks>
+            Method throws <see cref="T:System.InvalidOperationException"/> if priority queue is empty
+            </remarks>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.PeekValue">
+            <summary>
+            Returns value of the element with minimun priority, without removing it from the queue
+            </summary>
+            <returns>value of the element with minimum priority</returns>
+            <remarks>
+            Method throws <see cref="T:System.InvalidOperationException"/> if priority queue is empty
+            </remarks>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Enqueus element into priority queue
+            </summary>
+            <param name="item">element to add</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.Clear">
+            <summary>
+            Clears the collection
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Determines whether the priority queue contains a specific element
+            </summary>
+            <param name="item">The object to locate in the priority queue</param>
+            <returns><c>true</c> if item is found in the priority queue; otherwise, <c>false.</c> </returns>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
+            <summary>
+            Copies the elements of the priority queue to an Array, starting at a particular Array index. 
+            </summary>
+            <param name="array">The one-dimensional Array that is the destination of the elements copied from the priority queue. The Array must have zero-based indexing. </param>
+            <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
+            <remarks>
+            It is not guaranteed that items will be copied in the sorted order.
+            </remarks>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>Enumerator</returns>
+            <remarks>
+            Returned enumerator does not iterate elements in sorted order.</remarks>
+        </member>
+        <member name="M:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>Enumerator</returns>
+            <remarks>
+            Returned enumerator does not iterate elements in sorted order.</remarks>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.IsEmpty">
+            <summary>
+            Gets whether priority queue is empty
+            </summary>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.Count">
+            <summary>
+            Gets number of elements in the priority queue
+            </summary>
+        </member>
+        <member name="P:SCICT.NLP.Utility.Transliteration.PrioritySelection.PriorityQueue`2.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the collection is read-only. 
+            </summary>
+            <remarks>
+            For priority queue this property returns <c>false</c>.
+            </remarks>
+        </member>
+    </members>
+</doc>

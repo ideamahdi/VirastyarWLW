@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SCICT.NLP.TextProofing.Punctuation</name>
+    </assembly>
+    <members>
+        <member name="T:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine">
+            <summary>
+            Main Punctuation Corrector class.
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.#ctor">
+            <summary>
+            Constractor for PuncEngine class.
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.#ctor(System.String)">
+            <summary>
+            Constractor for PuncEngine class.
+            </summary>
+            <param name="patternsFilePath">Pattern File Name (full path or relative name).</param>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.InitInputString(System.String)">
+            <summary>
+            Everytime you build a PuncEngine class you MUST initialize it with an input string. This is the string you want to find its punctuational error; e.g. a paraphaph. 
+            You just need to pass a string as an input parameter to InitInputString() function.
+            </summary>
+            <param name="inStr">Input String; e.g. paragraph or sentence. there is no limit on its length but we suggest to keep it less than 2000 character</param>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetCorrectedString">
+            <summary>
+            When you have done with input text get back corrected text (whole tetx) by calling GetCorrectedString().
+            </summary>
+            <returns>Corrected string</returns>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.SetSkipIndex(System.Int32)">
+            <summary>
+            Set an index in the text as a skip point. Correction process will continue after this point and preceding text will be ignored.
+            </summary>
+            <param name="indx">Skip index; must be less than length of input string </param>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetSkipIndex"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetSkipIndex">
+            <summary>
+            Get skip point set by SetSkipIndex.
+            </summary>
+            <returns>An integer value denotes skip point</returns>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.SetSkipIndex(System.Int32)"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.FindMistake">
+            <summary>
+            After class initiation you can find mistakes.
+            This function works in two mode. (1) Normal (2) When Golden Rule is set.
+            In the first case, this function makes the class to focus on the first mistake in the text.
+            After focus you can do additional tasks such as CorrectMistake().
+            In the second case, this will find and correct all mistakes according to Golden Rule.
+            </summary>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.InitInputString(System.String)"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.SetGoldenRule"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.UnsetGoldenRule"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.CorrectMistake(System.Int32)">
+            <summary>
+            Correct focused mistake. You must focus on a mistake beforehand by calling FindMistake().
+            </summary>
+            <param name="rep">Every mistake pattern may have several correction patterns which indicated by an input integer.</param>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.FindMistake"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.SkipMistake">
+            <summary>
+            Skip focused mistake. It will set the skip point to the point which the mistake was found.
+            </summary>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.SetSkipIndex(System.Int32)"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.IsErrorFound">
+            <summary>
+            Verify result of last call for FindMistake() to see whether mistake found or not.
+            </summary>
+            <returns>Returns True when mistake found otherwise returns False</returns>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMistakeIndex">
+            <summary>
+            Get index of focused mistake. You must focus on a mistake beforehand by calling FindMistake().
+            This function accompanies wiht its couple GetMistakeLength() to determine mistake position.
+            </summary>
+            <returns>An integer value denotes index of mistake</returns>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMistakeLength"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.FindMistake"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMistakeLength">
+            <summary>
+            Get length of focused mistake. You must focus on a mistake beforehand by calling FindMistake().
+            This function accompanies wiht its couple GetMistakeIndex() to determine mistake position.
+            </summary>
+            <returns>An integer value denotes length of mistake</returns>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMistakeIndex"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.FindMistake"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.BookMarkSkipIndex">
+            <summary>
+            Sometime we need to bookmark Skip Index to recall it in the future. E.g. when correcting all mistake by a rule we must save current skip index. In this case we call BookMarkSkipIndex().
+            This function go together wiht its couple BookMarkSkipIndex().
+            </summary>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.RecallSkipIndex"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.SetGoldenRule"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.UnsetGoldenRule"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.RecallSkipIndex">
+            <summary>
+            Used to recll last saved Skip Index.
+            </summary>
+            <see cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.BookMarkSkipIndex"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMistakeDescription">
+            <summary>
+            Returns a string which describes focused mistake.
+            </summary>
+            <returns>String description of mistake</returns>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMistakeSuggestion"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMistakeSuggestion">
+            <summary>
+            Returns a string which suggest an action to correct focused mistake.
+            </summary>
+            <returns>String, suggesting an action.</returns>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMistakeDescription"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetSubstitutionString">
+            <summary>
+            Returns a string that should substitutes "Mistake String" which determined by GetMistakeIndex() and GetMistakeLength().
+            </summary>
+            <returns>Substitution string</returns>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetSubstitutionString"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMistakeIndex"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMistakeLength"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetMultiSubstitutionString">
+            <summary>
+            Similar to GetSubstitutionString() but returns multiple suggestions. You can use one of those suggestion to correct text.
+            you can correct text inside class by calling CorrectMistake(int rep) with an input integer which selects one of suggestions.
+            </summary>
+            <returns>Array of suggestion string.</returns>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.CorrectMistake(System.Int32)"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.GetSubstitutionString"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.DisableLastRule">
+            <summary>
+            Disables last focused rule.
+            </summary>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.EnableAllRules"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.EnableAllRules">
+            <summary>
+            Enables all rules.
+            </summary>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.DisableLastRule"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.SetGoldenRule">
+            <summary>
+            Set current rule which focused mistake was found by, as Golden Rule. A Golden Rule is defined to correct all mistakes at ones.
+            </summary>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.SetGoldenRule"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.FindMistake"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.UnsetGoldenRule">
+            <summary>
+            Unset current Golden Rule. 
+            </summary>
+            <see cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.SetGoldenRule"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.FindMistake"/>
+        </member>
+        <member name="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.IsAllChangeable">
+            <summary>
+            Determine whether Golden Rule could be applied or not.
+            </summary>
+            <returns>True, when a Golden rule is applicable; False, when a Golden rule is not applicable.</returns>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.SetGoldenRule"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.UnsetGoldenRule"/>
+            <seealso cref="M:SCICT.NLP.TextProofing.Punctuation.PunctuationCheckerEngine.FindMistake"/>
+        </member>
+    </members>
+</doc>

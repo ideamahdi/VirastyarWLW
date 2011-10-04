@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SCICT.NLP.Utility.LanguageModel</name>
+    </assembly>
+    <members>
+        <member name="T:SCICT.NLP.Utility.LanguageModel.POSTaggedDictionaryExtractor">
+            <summary>
+             Extract a POS tagged dictionary from a text corpus
+            </summary>
+        </member>
+        <member name="M:SCICT.NLP.Utility.LanguageModel.POSTaggedDictionaryExtractor.AddTerm(System.String)">
+            <summary>
+             Add a term
+            </summary>
+            <param name="term">Term</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.LanguageModel.POSTaggedDictionaryExtractor.ExtractPOSTaggedDictionary(System.String)">
+            <summary>
+             Extract POS tagged dictionary to a file
+            </summary>
+            <param name="fileName">File name</param>
+            <returns>Tru on success</returns>
+        </member>
+        <member name="M:SCICT.NLP.Utility.LanguageModel.POSTaggedDictionaryExtractor.AddPlainText(System.String)">
+            <summary>
+             Add a text corpus
+            </summary>
+            <param name="text">Text string</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.LanguageModel.POSTaggedDictionaryExtractor.AppendExternalPOSTaggedDictionary(System.String)">
+            <summary>
+             Append exteranl POS tagged dictionary
+            </summary>
+            <param name="fileName">File name</param>
+        </member>
+        <member name="M:SCICT.NLP.Utility.LanguageModel.POSTaggedDictionaryExtractor.AddToDictionary(System.String,System.String)">
+             <summary>
+             Add a correct word to dictionary
+             </summary>
+             <param name="userSelectedWord">Form of word which user select to add to dictionary</param>
+             <param name="originalWord">Original word without lemmatization</param>
+            <returns>True if word is successfully added, otherwise False</returns>
+        </member>
+        <member name="P:SCICT.NLP.Utility.LanguageModel.POSTaggedDictionaryExtractor.ProgressPercent">
+            <summary>
+            Gets the percentage of progress.
+            </summary>
+            <value>The progress percent.</value>
+        </member>
+    </members>
+</doc>

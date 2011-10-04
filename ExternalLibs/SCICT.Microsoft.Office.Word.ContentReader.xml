@@ -1,0 +1,1480 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SCICT.Microsoft.Office.Word.ContentReader</name>
+    </assembly>
+    <members>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.DocFactory">
+            <summary>
+            this class is responsible for opening documents based upon their extensions, 
+            and reclaiming their resources in the end.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.DocFactory.DocTypeHandlers">
+            <summary>
+            A dictionary of extension-to-document-class-type, which specifies which file extension 
+            should be opened by which document class (derived form IDocument).
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.DocFactory.#cctor">
+            <summary>
+            static constructor which fills the dictionary of different file extensions.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.DocFactory.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.Microsoft.Office.Word.ContentReader.DocFactory"/> class.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.DocFactory.LoadDocTypeHandlers">
+            <summary>
+            Loads all classes attributed by SupportedDocTypesAtrribute through reflection.
+            Then creates a dictionary of extensions to document class type, which is responsible to load 
+            documents of that extension.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.DocFactory.LoadDocument(System.String)">
+            <summary>
+            Finds the proper document class according to the file extension, then opens the file by
+            the found document class, and returns an (IDocument) reference to the document object.
+            </summary>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.DocFactory.Finalize">
+            <summary>
+            Releases unmanaged resources and performs other cleanup operations before the
+            <see cref="T:SCICT.Microsoft.Office.Word.ContentReader.DocFactory"/> is reclaimed by garbage collection.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.DocFactory.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.DocFactory.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.DocFactory.SupportedFileTypes">
+            <summary>
+            Gets a list of all extensions supported by all document classes 
+            (derived from IDocument) in this assembly.
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.DocumentUtils">
+            <summary>
+            This class provides document-wide utility functions
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.DocumentUtils.ReadParagraphs(Microsoft.Office.Interop.Word.Document)">
+            <summary>
+            Reads the paragraphs of the document starting from the beginning.
+            </summary>
+            <param name="document">The document to read from.</param>
+            <returns>Sequence of ranges containing paragraphs</returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.DocumentUtils.ReadParagraphsStartingFrom(Microsoft.Office.Interop.Word.Document,Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Reads the paragraphs of the document starting from the specified paragraph.
+            </summary>
+            <param name="document">The document to read from.</param>
+            <param name="firstPar">The first paragraph to start reading from.</param>
+            <returns>Sequence of ranges containing paragraphs</returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.DocumentUtils.ReadParagraphsStartingFromCursor(Microsoft.Office.Interop.Word.Document)">
+            <summary>
+            Reads the paragraphs of the document starting from cursor.
+            </summary>
+            <param name="document">The document to read from.</param>
+            <returns>Sequence of ranges containing paragraphs</returns>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.StoryType">
+            <summary>
+            Enumerates different locations where a block (i.e. IBlock) can exist.
+            The values are based upon Range.StoryType. 
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.Illegal">
+            <summary>
+            Illegal story type
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.Other">
+            <summary>
+            unknown story type
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.CommentsStory">
+            <summary>
+            comments
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.EndnotesStory">
+            <summary>
+            end-notes
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.EvenPagesFooterStory">
+            <summary>
+            even pages footer
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.EvenPagesHeaderStory">
+            <summary>
+            even pages header
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.FirstPageFooterStory">
+            <summary>
+            first page footer
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.FirstPageHeaderStory">
+            <summary>
+            first page header
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.FootnotesStory">
+            <summary>
+            footnotes
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.MainTextStory">
+            <summary>
+            main text
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.PrimaryFooterStory">
+            <summary>
+            primary footer
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.PrimaryHeaderStory">
+            <summary>
+            primary header
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.StoryType.TextFrameStory">
+            <summary>
+            text frame
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.BlockType">
+            <summary>
+            Enumerates different kind of blocks (i.e. IBlock).
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.BlockType.Illegal">
+            <summary>
+            illegal block type
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.BlockType.Word">
+            <summary>
+            word
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.BlockType.Sentence">
+            <summary>
+            sentence
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.BlockType.Paragraph">
+            <summary>
+            paragraph
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.BlockType.Everything">
+            <summary>
+            the whole document content
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.DocumentType">
+            <summary>
+            Enumerates different kind of documents.
+            At the time of this documentation this Enum is not used.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.DocumentType.Illegal">
+            <summary>
+            illegal document type
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.DocumentType.Doc">
+            <summary>
+            an MS-Word .doc or .docx file
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.DocumentType.HTML">
+            <summary>
+            HTML file
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.DocumentType.PlainText">
+            <summary>
+            Plain text file
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.DocumentType.RTF">
+            <summary>
+            a .rtf file
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.WordType">
+            <summary>
+            Enumerates a word type according to its characters.
+            This enum is not used in the library, but has usage in the client projects.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.WordType.Illegal">
+            <summary>
+            illegal word type
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.WordType.Space">
+            <summary>
+            all spaces
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.WordType.ArabicWord">
+            <summary>
+            arabic word
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.WordType.ArabicPunc">
+            <summary>
+            arabic pucntuation
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.WordType.ArabicNum">
+            <summary>
+            arabic number
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.WordType.EnglishWord">
+            <summary>
+            english word
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.WordType.EnglishPunc">
+            <summary>
+            english punctuation
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.WordType.EnglishNum">
+            <summary>
+            english number
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.TrimRangeResult">
+            <summary>
+            Enumerates different outcomes of a range trim operation.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.TrimRangeResult.InvalidRange">
+            <summary>
+            Range is null, or empty or full of control characters
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.TrimRangeResult.Success">
+            <summary>
+            The range is trimmed and fit successfully
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.TrimRangeResult.Failure">
+            <summary>
+            The range is valid, and has valid contents; but it cannot be trimmed
+            e.g., because of hyperlinks.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.TrimRangeResult.TrimmedButLengthMismatch">
+            <summary>
+            The range-text equals the desired trimmed text. But the length of the
+            range is larger than the length of the text.
+            i.e., the range contains the text, together with some meta-data
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.Shared.FileUtils">
+            <summary>
+            FileUtils Class provides some static utilities for accessing files, in a directory structure.
+            This class has no usage in the whole ContentReader Library, but since the clients
+            (i.e. PersianContentReader.Console, and PersianContentReader.UI projects) use this 
+            class it is placed in the PeresianContentReader.Lib project, so that 
+            it is shared with the clients also.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.Shared.FileUtils.GetAllProcessableFiles(System.String,System.Boolean)">
+            <summary>
+            returns a list of file names in a directory structure 
+            with extensions provided by DocFactory.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.Shared.FileUtils.GetAllProcessableFiles(System.String,System.Boolean,System.String)">
+            <summary>
+            returns a list of file names in a directory structure 
+            with a given naming pattern.
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.IBlock">
+            <summary>
+            The parent interface for the objects carrying MS-Word document content.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.IBlock.m_parentDocument">
+            <summary>
+            Reference to the document owning this block
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.IBlock.#ctor(SCICT.Microsoft.Office.Word.ContentReader.IDocument)">
+            <summary>
+            Protected Constructor, sets the reference to the parent document object.
+            </summary>
+            <param name="parentDocument"></param>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.IBlock.ParentDocument">
+            <summary>
+            Gets a reference to the document owning this block
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.IBlock.Content">
+            <summary>
+            The main content of the Block.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.IBlock.BlockType">
+            <summary>
+            The type of the block, whether it is Paragraph, Sentence, Word, and so on.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.IBlock.StoryType">
+            <summary>
+            Where this block is located. It is based upon Range.StoryType
+            StoryTypes could be FootNote, EndNote, MainText, and so on
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.IBlock.Paragraphs">
+            <summary>
+            Sequence of paragraphs within this block
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.IBlock.Sentences">
+            <summary>
+            Sequence of sentences within this block
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.IBlock.Words">
+            <summary>
+            Sequence of words within this block
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.IDocument">
+            <summary>
+            Parent for objects manipulating MS-Word Document.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.IDocument.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.Microsoft.Office.Word.ContentReader.IDocument"/> class.
+            It simply initializes the Persian character filters.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.IDocument.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.Microsoft.Office.Word.ContentReader.IDocument"/> class.
+            </summary>
+            <param name="documentPath">The document path.</param>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.IDocument.listCharFilters">
+            <summary>
+            List of Character Filters already added to the document
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.IDocument.AddCharFilter(SCICT.NLP.Persian.ICharFilter)">
+            <summary>
+            Adds a character filter. Added Character filters are used by FilterChar method.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.IDocument.FilterChar(System.Char)">
+            <summary>
+            Filters the character using all the CharFilters added.
+            Since it may use several char filters this method is different form
+            StringUtils.Filter* methods of PersianUtils, since they only use PersianCharFilter.
+            This method is public, because IBlock and the children use it.
+            </summary>
+            <param name="chin">character to filter</param>
+            <returns>
+            The filtered version of the input character. If there are several applicable 
+            CharFilters applicable to the input character, the one added first is only applied.
+            If there are no CharFilters applicable, the original character is returned.
+            </returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.IDocument.Load(System.String)">
+            <summary>
+            Abstract method which should open some document from file with the given path.
+            This method is visible to the class children only. 
+            Clients should call LoadDocument method instead.
+            </summary>
+            <returns>true if load has succeeded.</returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.IDocument.GetContent">
+            <summary>
+            returns an IBlock to the content of the document. 
+            This reference will refer to the whole document content.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.IDocument.LoadDocument(System.String)">
+            <summary>
+            public method to load a document from file with the given path.
+            This method first checks whether the document is already loaded.
+            It not calls the Load method, which is going to be 
+            implemented by the class children. It the document is already open
+            it throws an exception.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.IDocument.CharFilters">
+            <summary>
+            Sequence of character filters added to the document.
+            Added Character filters are used by FilterChar method.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.IDocument.DocumentPath">
+            <summary>
+            The path to the document, if it is opened directly.
+            If the document is not opened directly (e.g. it refers to a document provieded by MS Word Addin)
+            then this property will not have proper value.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.IDocument.IsLoaded">
+            <summary>
+            Whether the document is loaded from a file, or via an MS-Word-Addin.
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlap">
+            <summary>
+            Provides tools to detect the kind of the overlap between two intervals
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlap.Detect(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Detects kind of the overlap that the specified two ranges have.
+            </summary>
+            <param name="start1">The inclusive start of the first interval.</param>
+            <param name="end1">The exclusive end of the first interval.</param>
+            <param name="start2">The inclusive start of the second interval.</param>
+            <param name="end2">The exclusive end of the second interval.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlap.GetSign(SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlapKinds)">
+            <summary>
+            Gets the sign corresponding to the given overlap kind.
+            -- means the first interval, and
+            () means the second interval.
+            </summary>
+            <param name="overlapKind">Kind of the overlap.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlapKinds">
+            <summary>
+            Enumerates all possible ways two intervals may overlap
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlapKinds.FirstInsideSecond">
+            <summary>
+            (--)
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlapKinds.FirstIncludesSecond">
+            <summary>
+            -()-
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlapKinds.FirstBeforeAndInsideSecond">
+            <summary>
+            -(-)
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlapKinds.FirstInsideAndAfterSecond">
+            <summary>
+            (-)-
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlapKinds.FirstBeforeSecond">
+            <summary>
+            --()
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.IntervalOverlapKinds.FirstAfterSecond">
+            <summary>
+            ()--
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock">
+            <summary>
+            Any kind of contents of a MS-Word Document.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.range">
+            <summary>
+            Reference to the Range object from Microsoft Word Object Model, corresponding
+            to this MSWordBlock instance
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.blockType">
+            <summary>
+            The type of the Block (e.g. Word, Sentence, Paragraph, ...)
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.#ctor(SCICT.Microsoft.Office.Word.ContentReader.IDocument,Microsoft.Office.Interop.Word.Range,SCICT.Microsoft.Office.Word.ContentReader.BlockType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock"/> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="range">The range.</param>
+            <param name="blockType">Type of the block.</param>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.Range">
+            <summary>
+            Gets a reference to the Range object from the MS-Word Object model,
+            corresponding to this instance of MSWordBlock
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.Content">
+            <summary>
+            Gets a filtered content of the block.
+            For a non-filtered content of the block use the RawContent property.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.RawContent">
+            <summary>
+            Gets the content of the block intact.
+            For a filtered version of the content use the Content property.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockType">
+            <summary>
+            Gets the type of the block (e.g. word, sentence, paragraph, ...)
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.StoryType">
+            <summary>
+            Gets the location where the block is located (e.g. footnote, end-note, main-story, ...)
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.Paragraphs">
+            <summary>
+            Gets the sequence of non empty paragraphs within this block.
+            The content is trimmed before being returned.
+            For a sequence of intact paragraphs within this block use 
+            the RawParagraphs property.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.Sentences">
+            <summary>
+            Gets the sequence of non empty sentences within this block.
+            The content is trimmed before being returned.
+            For a sequence of intact sentences within this block use 
+            the RawSentences property.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.Words">
+            <summary>
+            Gets the sequence of non empty words within this block.
+            The content is trimmed before being returned.
+            For a sequence of intact words within this block use 
+            the RawWords property.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.RawParagraphs">
+            <summary>
+            Gets the sequence of paragraphs within this block as returned by
+            Microsoft Mord Object Word Model.
+            For a sequence of non-empty trimmed paragraphs within this block use 
+            the Paragraphs property.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.RawSentences">
+            <summary>
+            Gets the sequence of sentences within this block as returned by
+            Microsoft Mord Object Word Model.
+            For a sequence of non-empty trimmed sentences within this block use 
+            the Sentences property.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.RawWords">
+            <summary>
+            Gets the sequence of words within this block as returned by
+            Microsoft Mord Object Word Model.
+            For a sequence of non-empty trimmed words within this block use 
+            the Words property.
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerable">
+            <summary>
+            An enumerable class, used for enumerating blocks within another block.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerable.#ctor(SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator)">
+            <summary>
+            recieves an enumerator instance and returns it upon GetEnumerator method call.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerable.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator">
+            <summary>
+            An enumerator class to help walk through the blocks within another block.
+            The enumerable class that uses this enumerator is BlockEnumerable.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.block">
+            <summary>
+            The block which we plan to read its content
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.readOrderType">
+            <summary>
+            The type of reading (i.e. word-by-word, sentence-by-sentence, ...)
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.listEtors">
+            <summary>
+            List of enumerators gained from Ranges inside the block
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.curListIndex">
+            <summary>
+            Points to the current index of the list of enumerators namely listEtors.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.curBlock">
+            <summary>
+            Current block which is going to be returned by the Current Property
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.listVisitedRanges">
+            <summary>
+            A List of visited ranges, to help check not returning some range more than once.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.rangeEqualityComparerObj">
+            <summary>
+            A Comparer object used for checking duplicate ranges.
+            For more information on the Comparer identity check algorithm 
+            refer to the RangeEqualityComparer class.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.MoveNext">
+            <summary>
+            Reads the next block if any, or returns false if there are no next blocks.
+            The read block will be stored in curBlock, which consequently 
+            will be returned by the Current method.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.Reset">
+            <summary>
+            Resets the enumerator. Referring to MSDN this method is useful for COM-Interoperability.
+            Regular applications do not need to implement this. 
+            But anyway the preferred implementation would be to reset the state of the enumerator.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.#ctor(SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock,SCICT.Microsoft.Office.Word.ContentReader.BlockType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator"/> class.
+            </summary>
+            <param name="block">The block.</param>
+            <param name="readType">Type of the read operation.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.MoveNext(SCICT.Microsoft.Office.Word.ContentReader.BlockType)">
+            <summary>
+            Reads the next block of type blockType if any, 
+            or returns false if there are no blocks remaining.
+            The read block will be stored in curBlock, which consequently 
+            will be returned by the Current method.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.FindFirstNonNullEtorIndex">
+            <summary>
+            Moves the value of curListIndex to the 
+            next member of listEtors which is not null.
+            That's necessary because the list may contain null members.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.GetContentEnumerable(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            We only read document contents Word-by-Word. Also Paragraphs and Sentences are 
+            recognized from words.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.ReadWordContents(Microsoft.Office.Interop.Word.Range,System.Collections.Generic.List{System.Collections.IEnumerator})">
+            <summary>
+            Reads the whole word contents from the whole word's object model.
+            The type of content to be read (i.e. word-by-word, sentence-by-sentence, ...)
+            is determined by the GetContentEnumerable method.
+            This is the base content reading method to be called. Since all the other methods
+            work recursively one should call this method to start the operation.
+            </summary>
+            <param name="range">The range object whose content is to be read.</param>
+            <param name="list">List of enumerators to be filled.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.ReadMainStory(Microsoft.Office.Interop.Word.Range,System.Collections.Generic.List{System.Collections.IEnumerator})">
+            <summary>
+            Receives a range and reads its content as well as content of all 
+            the shapes inside that range. Also this function checks if the 
+            range has been already read, so prevnets reading something twice.
+            Every content-reading method makes its subject range, and must call 
+            this method to read the contents of the mentioned range.
+            </summary>
+            <param name="range">The range to be read.</param>
+            <param name="list">List of enumerators to be filled.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.ReadInlineShapes(Microsoft.Office.Interop.Word.Range,System.Collections.Generic.List{System.Collections.IEnumerator})">
+            <summary>
+            Reads the inline-shapes within the given range.
+            By reading we mean adding the enumerator to the list of enumerators.
+            This list will be read later.
+            </summary>
+            <param name="range">The range to be read.</param>
+            <param name="list">List of enumerators to be filled.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.ReadFrames(Microsoft.Office.Interop.Word.Range,System.Collections.Generic.List{System.Collections.IEnumerator})">
+            <summary>
+            Reads the frames within the given range.
+            By reading we mean adding the enumerator to the list of enumerators.
+            This list will be read later.
+            </summary>
+            <param name="range">The range to be read.</param>
+            <param name="list">List of enumerators to be filled.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.ReadFormFields(Microsoft.Office.Interop.Word.Range,System.Collections.Generic.List{System.Collections.IEnumerator})">
+            <summary>
+            Reads the form-fields within the given range.
+            By reading we mean adding the enumerator to the list of enumerators.
+            This list will be read later.
+            </summary>
+            <param name="range">The range to be read.</param>
+            <param name="list">List of enumerators to be filled.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.ReadFootNotes(Microsoft.Office.Interop.Word.Range,System.Collections.Generic.List{System.Collections.IEnumerator})">
+            <summary>
+            Reads the footnotes within the given range.
+            By reading we mean adding the enumerator to the list of enumerators.
+            This list will be read later.
+            </summary>
+            <param name="range">The range to be read.</param>
+            <param name="list">List of enumerators to be filled.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.ReadBookmarks(Microsoft.Office.Interop.Word.Range,System.Collections.Generic.List{System.Collections.IEnumerator})">
+            <summary>
+            Reads the bookmarks within the given range.
+            By reading we mean adding the enumerator to the list of enumerators.
+            This list will be read later.
+            </summary>
+            <param name="range">The range to be read.</param>
+            <param name="list">List of enumerators to be filled.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.ReadEndNotes(Microsoft.Office.Interop.Word.Range,System.Collections.Generic.List{System.Collections.IEnumerator})">
+            <summary>
+            Reads the endnotes within the given range.
+            By reading we mean adding the enumerator to the list of enumerators.
+            This list will be read later.
+            </summary>
+            <param name="range">The range to be read.</param>
+            <param name="list">List of enumerators to be filled.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.ReadComments(Microsoft.Office.Interop.Word.Range,System.Collections.Generic.List{System.Collections.IEnumerator})">
+            <summary>
+            Reads the comments within the given range.
+            By reading we mean adding the enumerator to the list of enumerators.
+            This list will be read later.
+            </summary>
+            <param name="range">The range to be read.</param>
+            <param name="list">List of enumerators to be filled.</param>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.Current">
+            <summary>
+            Gets the current block to be read
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordBlock.BlockEnumerator.System#Collections#Generic#IEnumerator{SCICT#Microsoft#Office#Word#ContentReader#MSWordBlock}#Current">
+            <summary>
+            Gets the current block to be read
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument">
+            <summary>
+            This class manipulates an MS-Word Document.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.app">
+            <summary>
+            a reference to the Word Application owning this document
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.hasInternalApp">
+            <summary>
+            Determines whether the MS-Word Application object is created internally by this object,
+            or provided externally (e.g. via an MS-Word Addin).
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.currentDoc">
+            <summary>
+            a reference to the Word Document of the Microsoft Object Model,
+            corresponding to this object of the MSWordDocument class.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.hasInternalDoc">
+            <summary>
+            Determines whether the MS-Word Document object is created internally by this object,
+            or provided externally (e.g. via an MS-Word Addin).
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.#ctor(System.String)">
+            <summary>
+            creates an instance of this class by loading a document from file specified by the given path.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.#ctor(Microsoft.Office.Interop.Word.Document)">
+            <summary>
+            Creates an instance of this class by providing a reference to the 
+            Word Document of the Microsoft Object Model, corresponding to this object 
+            of the MSWordDocument class.
+            This approach is used when working with Microsoft Word Addins.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.Load(System.String)">
+            <summary>
+            Loads the file. This method is protected, thus clients should call 
+            LoadDocument method of the IDocument abstract class.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.Finalize">
+            <summary>
+            Destructor of the class :)
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.GetContent">
+            <summary>
+            returns an IBlock reference to the whole content of the document.
+            thus the BlockType will be Everything.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.Cleanup">
+            <summary>
+            This method is called by DocFactory's Dispose mthod.
+            </summary>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.MSWordDocument.CurrentMSDocument">
+            <summary>
+            Gets a reference to the Word Document of the Microsoft Object Model,
+            corresponding to this object of the MSWordDocument class.
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.SetRange(Microsoft.Office.Interop.Word.Range,Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Makes a range to become the same as anothr range. The other range's 
+            storytype must be the same as the source range. otherwise the behavior of this
+            function is unknown.
+            </summary>
+            <param name="range"></param>
+            <param name="otherRange"></param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.SetRangeAndTrim(Microsoft.Office.Interop.Word.Range,Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Sets the range and trims it.
+            </summary>
+            <param name="range">The range.</param>
+            <param name="otherRange">The other range.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.NextWord(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Gets the next word after the range. Preferably call this method if the 
+            StoryType of the range is also Word.
+            </summary>
+            <param name="range">The range.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.PreviousWord(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Gets the previous word before the range. Preferably call this method if the 
+            StoryType of the range is also Word.
+            </summary>
+            <param name="range">The range.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.GetFirstWord(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Gets the first word of the range.
+            </summary>
+            <param name="range">The range.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.GetValidCharAt(Microsoft.Office.Interop.Word.Range,System.Int32)">
+            <summary>
+            Gets the range of the valid char at the given index. 
+            The index specified here corresponds to the string-index, except that, this index is 1-based, 
+            but a typical string index is 0-based.
+            </summary>
+            <param name="range">The range.</param>
+            <param name="index">The 1-based index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.GetSubRange(Microsoft.Office.Interop.Word.Range,System.Int32,System.Int32)">
+            <summary>
+            Gets the sub range - the safe way.
+            This method character ranges instead of substrings, and that's why it's safer than
+            GetSubRange.
+            </summary>
+            <param name="range">The range</param>
+            <param name="startIndex">The 0-based start index (not the range-index).</param>
+            <param name="endIndex">The 0-based end index (not the range-index).</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.GetSubRange(Microsoft.Office.Interop.Word.Range,System.Int32)">
+            <summary>
+            Gets the sub range - the safe way.
+            This method character ranges instead of substrings, and that's why it's safer than
+            GetSubRange.
+            </summary>
+            <param name="range">The range</param>
+            <param name="startIndex">The 0-based start index (not the range-index).</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.GetCopy(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Gets a copy of the range, so that modifying parameters of either of them will not alter the other.
+            </summary>
+            <param name="range">The range.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.FixLimits(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Fixes the limits of the specified range, so that it fits its content.
+            </summary>
+            <param name="range">The range.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.Trim(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Trims the specified range.
+            </summary>
+            <param name="range">The range.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeExtensions.SelectIfPossible(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Selects Range if possible.
+            </summary>
+            <param name="range">The range.</param>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils">
+            <summary>
+            This class provides various helper methods to work with the Range class.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.FindTrimmedRangeStart(Microsoft.Office.Interop.Word.Range,System.String)">
+            <summary>
+            Finds the trimmed range start. returns -1 if it cannot trim the start of range.
+            </summary>
+            <param name="range">The range to find its trimmed content start.</param>
+            <param name="trimmedText">The trimmed text of the range.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.FindTrimmedRangeEnd(Microsoft.Office.Interop.Word.Range,System.String)">
+            <summary>
+            Finds the trimmed range end. returns -1 if it cannot trim the end of range.
+            </summary>
+            <param name="range">The range to find its trimmed content start.</param>
+            <param name="trimmedText">The trimmed text of the range.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.MatchStringWithRange(Microsoft.Office.Interop.Word.Range,System.String,System.Int32,System.Int32,System.Int32@,System.Int32@)">
+            <summary>
+            Matches the string with range.
+            </summary>
+            <param name="r">The range</param>
+            <param name="str">The String.</param>
+            <param name="subStrIndex">Index of the sub String.</param>
+            <param name="subStrLength">Length of the sub String.</param>
+            <param name="rangeStartIndex">Start index of the range.</param>
+            <param name="rangeEndIndx">The range end indx.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetStrIndexInRange(Microsoft.Office.Interop.Word.Range,System.String,System.Int32)">
+            <summary>
+            Gets the range-index equivalant to strStartIndex in str In case that it is going to be 
+            normalized with respect to its spaces and half-spaces.
+            </summary>
+            <param name="r"></param>
+            <param name="str"></param>
+            <param name="strStartIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetTrimmedContentEndIndexInRange(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Returns the range-index for the real end of the range, 
+            skipping whitespace, control characters, and hidden text at the end of the range.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetContentStartIndexInRange(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Returns the range-index for the real beginning of the range, 
+            skipping whitespace, control characters, and hidden text at the beginning of the range.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.TrimRange(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Trims the range so that it fits its trimmed content.
+            If the specified range is null or its Text property is null,
+            it does not modify the range.
+            Note: It modifies the range in parameter and does NOT create a copy
+            This method is obsolete, use <c>TryTrimRange</c> instead!
+            </summary>
+            <param name="r">The range to trim.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.FixRangeLimits(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Fixes the range limits, so that it fits its content.
+            </summary>
+            <param name="r">The range.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.TrimRangeOld(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Trims the range so that it fits its trimmed content.
+            If the specified range is null or its Text property is null, 
+            it does not modify the range.
+            Note: It modifies the range in parameter and does NOT create a copy
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.IsRangeInsideHyperlink(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Checks whether the specified range is in a hyperlink or not.
+            </summary>
+            <returns>True, if the range is in a hyperlink. Otherwise returns false.</returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.IsRangeInsideHyperlink(Microsoft.Office.Interop.Word.Range,Microsoft.Office.Interop.Word.Hyperlink@)">
+            <summary>
+            Checks whether the specified range is in a hyperlink or not. 
+            If true, gives the hyperlink as an out parameter.
+            </summary>
+            <returns>True, if the range is in a hyperlink. Otherwise returns false.</returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.IsRangeInsideHyperlink(Microsoft.Office.Interop.Word.Range,Microsoft.Office.Interop.Word.Hyperlink)">
+            <summary>
+            Seemingly it checks if the link inside the range is the same as the provided hyperlink!
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.RefineAccordingToHL(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Checks whether the given range is inside a hyperlink and refine the range according to its hyperlink.
+            Note: Use this method whenever you want to modify a range that is the first or last word of a hyperlink.
+            Note: This method assumes that the given range is already trimmed.
+            [Seemingly this method is not used anywhere]
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.ShrinkRangeToFirstWord(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Modifies the given range to fit only the first word inside the range.
+            [Caution] This function modifies the original range object.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.ShrinkRangeToLastWord(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Modifies the given range to fit only the last word inside the range.
+            [Caution] This function modifies the original range object.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.ShrinkRangeToSubRange(Microsoft.Office.Interop.Word.Range,System.Int32)">
+            <summary>
+            Modifies the given range boundaries to the specified boundaries.
+            [Caution] This function modifies the original range object.
+            </summary>
+            <param name="r">The range to shrink.</param>
+            <param name="startIndex">0-based index (not the range-index)</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.ShrinkRangeToSubRange(Microsoft.Office.Interop.Word.Range,System.Int32,System.Int32)">
+            <summary>
+            Modifies the given range boundaries to the specified boundaries.
+            [Caution] This function modifies the original range object.
+            </summary>
+            <param name="r">The range to shrink.</param>
+            <param name="startIndex">0-based index (not the range-index)</param>
+            <param name="endIndex">0-based index (not the range-index)</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetCopy(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Gets a copy of the range, so that modifying parameters of either of them will not alter the other.
+            </summary>
+            <param name="range">The range.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetSubRange(Microsoft.Office.Interop.Word.Range,System.Int32,System.Int32)">
+            <summary>
+            Returns a range from index indicated by startIndex (which is a 0-based index not a range-index), to
+            endIndex inclusively.
+            It returns a new Range as return value (i.e. does not modify the original range).
+            Always check the return value for null.
+            </summary>
+            <param name="r">The range to return its sub-range.</param>
+            <param name="startIndex">0-based index (not the range-index)</param>
+            <param name="endIndex">0-based index (not the range-index)</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetSubRange(Microsoft.Office.Interop.Word.Range,System.Int32)">
+            <summary>
+            Returns a range from index indicated by startIndex (which is a 0-based index not a range-index).
+            It returns a new Range as return value (i.e. does not modify the original range).
+            Always check the return value for null.
+            </summary>
+            <param name="r">The range to return its subrange.</param>
+            <param name="startIndex">0-based index (not the range-index)</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.IsCharInTextButNotInRange(System.Char)">
+            <summary>
+            Determines whether the specified character is visible in range's text but not in range character ranges
+            </summary>
+            <param name="ch">The character.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetSubRange2(Microsoft.Office.Interop.Word.Range,System.Int32,System.Int32)">
+            <summary>
+            Gets the sub range - the safe way.
+            This method character ranges instead of substrings, and that's why it's safer than
+            GetSubRange.
+            </summary>
+            <param name="r">The range</param>
+            <param name="startIndex">The 0-based start index (not the range-index).</param>
+            <param name="endIndex">The 0-based end index (not the range-index).</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetSubRange2(Microsoft.Office.Interop.Word.Range,System.Int32)">
+            <summary>
+            Gets the sub range - the safe way.
+            This method character ranges instead of substrings, and that's why it's safer than
+            GetSubRange.
+            </summary>
+            <param name="r">The range</param>
+            <param name="startIndex">The 0-based start index (not the range-index).</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetIndexInRange(Microsoft.Office.Interop.Word.Range,System.Int32)">
+            <summary>
+            Gets the index in range which corresponds to the 
+            index in the string (Range.Text) of the same range.
+            Actually it returns the start index of the word in which the
+            given index has occurred.
+            [Seemingly this method is not used]
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.IsRangeEmpty(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Checks whether a given range cannot have any content. This will hapen when
+            1. the range itself is null,
+            2. the range.Text is null,
+            3. the range's start limit exceeds its end limit
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.AreRangesEqual(Microsoft.Office.Interop.Word.Range,Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Checks if two ranges are exactly equal, i.e. if they're boundaries are the same,
+            and they both belog to a same story type.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetWordOfSelection(Microsoft.Office.Interop.Word.Selection)">
+            <summary>
+            Gets the word containing the selection area. If the selection area contains more
+            than one word, it returns the first word.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.GetWordBeforeCursor(Microsoft.Office.Interop.Word.Selection)">
+            <summary>
+            Returns the range object for the word right before the cursor (if any).
+            e.g. Assume that pipe (|) indicates the cursor, the return value for:
+            "Unive|rsity" is "Unive", and for "|University" is empty.
+            </summary>
+            <param name="selection">The selection.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.SetOrInitializeRange(Microsoft.Office.Interop.Word.Range@,Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Sets the source range to become equal to the destination range.
+            If the source range is null, then it is assinged a non-null range.
+            </summary>
+            <param name="src">The source range.</param>
+            <param name="dst">The destination range.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.NormalizeLimits(System.Int32@,System.Int32@,System.Int32,System.Int32)">
+            <summary>
+            If required, changes the values of startLimit and endLimit so that
+            startLimit is smaller than endLimit and their values do not exceed
+            the Range's limits which are provided by the rangeStartLimit and
+            rangeEndLimit.
+            </summary>
+            <param name="startLimit">the start limit to be changed</param>
+            <param name="endLimit">the end limit to be changed</param>
+            <param name="rangeStartLimit">the start of the range to be checked upon</param>
+            <param name="rangeEndLimit">the end of the range to be checked upon</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.TrySelect(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Tries to select the specified range.
+            This method is provided, because there are some kind of ranges that
+            are not selectable. e.g. ranges happening in comments.
+            </summary>
+            <param name="r">The range to select.</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.TrimStartRange(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Trims the beginning of the range.
+            </summary>
+            <param name="r">The range to trim</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeUtils.TrimEndRange(Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Trims the end of the range.
+            </summary>
+            <param name="r">The range to trim.</param>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.RangeEqualityComparer">
+            <summary>
+            An IEqualityComparer of Range to provide means to check whether two 
+            ranges are equal if one is placed inside another. It does not check
+            exact equality.
+            This class is used by the content-reading methods of MSWordBlock.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeEqualityComparer.Equals(Microsoft.Office.Interop.Word.Range,Microsoft.Office.Interop.Word.Range)">
+            <summary>
+            Returns true if one range is inside another range, 
+            and they both belong to a same story type.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.ReadParagraphsStartingFromCursor(Microsoft.Office.Interop.Word.Document)">
+            <summary>
+            Reads the paragraphs of the document starting from cursor.
+            </summary>
+            <param name="document">The document to read.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.ReadParagraphs(Microsoft.Office.Interop.Word.Document)">
+            <summary>
+            Reads the paragraphs of the document starting from the beginning.
+            </summary>
+            <param name="document">The document.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.ReplaceAll(System.String,System.String)">
+            <summary>
+            Replaces all instances of the given string to search with the
+            new value provided, ignoring the character case. The original 
+            string values are used, and they are not standardized. The search and 
+            replacement does not respect word boundaries.
+            </summary>
+            <param name="oldValue">the string to search</param>
+            <param name="newValue">the string to replace</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.ReplaceAllCaseInsensitive(System.String,System.String)">
+            <summary>
+            Replaces all instances of the given string to search with the
+            new value provided, ignoring the character case. The original 
+            string values are used, and they are not standardized. The search and 
+            replacement does not respect word boundaries.
+            </summary>
+            <param name="oldValue">the string to search</param>
+            <param name="newValue">the string to replace</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.ReplaceAllWordsCaseInsensitive(System.String,System.String)">
+            <summary>
+            Replaces all instances of the given string to search with the
+            new value provided, ignoring the character case. The original 
+            string values are used, and they are not standardized. The search and 
+            replacement respect word boundaries.
+            </summary>
+            <param name="oldValue">the string to search</param>
+            <param name="newValue">the string to replace</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.ReplaceAllStandardized(System.String,System.String)">
+            <summary>
+            Replaces all instances of the given string to search with the
+            new value provided. The original string values are used, and they
+            are not standardized. The search and replacement does not respect
+            word boundaries.
+            </summary>
+            <param name="oldValue">the string to search</param>
+            <param name="newValue">the string to replace</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.ReplaceAllWordsStandardized(System.String,System.String)">
+            <summary>
+            Replaces all instances of the given string to search with the
+            new value provided. The original string values are used, and they
+            are not standardized. The search and replacement respect
+            word boundaries.
+            </summary>
+            <param name="oldValue">the string to search</param>
+            <param name="newValue">the string to replace</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.ReplaceAllRegexpStandardized(System.String,System.String)">
+            <summary>
+            Replaces the pattern specified by the given regular expression 
+            with the new value provided. The standardized version of string 
+            contents are used for search and replacement and the values are 
+            not standardized.
+            </summary>
+            <param name="regexp">the pattern to search</param>
+            <param name="newValue">the value to be replaced (NOT a regexp replace pattern such as $1 or $2)</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.ReplaceAllRegexp(System.String,System.String)">
+            <summary>
+            Replaces the pattern specified by the given regular expression 
+            with the new value provided. The original string contents are used for
+            search and replacement and the values are not standardized.
+            </summary>
+            <param name="regexp">The pattern to search</param>
+            <param name="newValue">the value to be replaced (NOT a regexp replace pattern such as $1 or $2)</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.ReplaceAllTwoWordsCombination(System.String,System.String,System.String)">
+            <summary>
+            Replaces the content of two consequtive words with thw new value provided.
+            The values are first standardized.
+            The search respects word boundaries.
+            </summary>
+            <param name="word1">the first word</param>
+            <param name="word2">the second word</param>
+            <param name="newValue">the new value to be replaced</param>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.TrimRange">
+            <summary>
+            Tries to make the range to fit its visible content. This method does NOT change 
+            the underlying range; instead it returns a new instance of <c>RangeWrapper</c>,
+            or <c>null</c> if the range could not be trimmed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.GetFirst(System.Int32)">
+            <summary>
+            levels: 
+            0: para
+            1: sent
+            2: wrod
+            3: char
+            4+: return
+            </summary>
+            <param name="level">The level.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.GetNext(System.Int32,System.Int32)">
+            <summary>
+            levels: 
+            0: para
+            1: sent
+            2: wrod
+            3: char
+            4+: return
+            </summary>
+            <param name="level"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.GetRangeWithCharIndex(System.Int32)">
+            <summary>
+            Gets the index of the range with 0-based char index.
+            The indexes are inclusive
+            </summary>
+            <param name="startChar">0-based character index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.RangeWrapper.GetRangeWithCharIndex(System.Int32,System.Int32)">
+            <summary>
+            Gets the index of the range with 0-based char index.
+            The indexes are inclusive
+            </summary>
+            <param name="startChar">0-based start char index.</param>
+            <param name="endChar">0-based end char index.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.SupportedDocTypesAtrribute">
+            <summary>
+            Atrribute class that specifies which IDocument derivatives support which file extensions.
+            For a usage example see: MSWordDocument class.
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.SupportedDocTypesAtrribute.m_supportedDocTypes">
+            <summary>
+            list of supported file types
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.SupportedDocTypesAtrribute.#ctor(System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.Microsoft.Office.Word.ContentReader.SupportedDocTypesAtrribute"/> class.
+            </summary>
+            <param name="args">The args.</param>
+        </member>
+        <member name="P:SCICT.Microsoft.Office.Word.ContentReader.SupportedDocTypesAtrribute.SupportedTypes">
+            <summary>
+            Gets the list of supported file types for the IDocument-derived instance.
+            </summary>
+        </member>
+        <member name="T:SCICT.Microsoft.Office.Word.ContentReader.Shared.WordInfo">
+            <summary>
+            WordInfo Class that encapsualtes some information about words, to be used for statiscal purposes.
+            This class has no usage in the whole ContentReader Library, but since the clients
+            (i.e. PersianContentReader.Console, and PersianContentReader.UI projects) use this 
+            class extensively it is placed in the PeresianContentReader.Lib project, so that 
+            it is shared with the clients also.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.Shared.WordInfo.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.Microsoft.Office.Word.ContentReader.Shared.WordInfo"/> class.
+            </summary>
+        </member>
+        <member name="M:SCICT.Microsoft.Office.Word.ContentReader.Shared.WordInfo.#ctor(System.String,System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.Microsoft.Office.Word.ContentReader.Shared.WordInfo"/> class.
+            </summary>
+            <param name="noSpace">word without space.</param>
+            <param name="noErab">The word without erab.</param>
+            <param name="count">The Count of the word.</param>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.Shared.WordInfo.WordNoSpace">
+            <summary>
+            The word without spaces
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.Shared.WordInfo.WordNoErab">
+            <summary>
+            The word without erabs
+            </summary>
+        </member>
+        <member name="F:SCICT.Microsoft.Office.Word.ContentReader.Shared.WordInfo.Count">
+            <summary>
+            The Count of the words
+            </summary>
+        </member>
+    </members>
+</doc>
