@@ -34,8 +34,8 @@
             this.btnChange = new System.Windows.Forms.Button();
             this.btnChangeAll = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtMisspelledWord = new System.Windows.Forms.TextBox();
+            this.txtReplacement = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lstSuggestions = new System.Windows.Forms.ListBox();
@@ -50,6 +50,7 @@
             this.btnIgnore.TabIndex = 0;
             this.btnIgnore.Text = "نادیده گرفتن";
             this.btnIgnore.UseVisualStyleBackColor = true;
+            this.btnIgnore.Click += new System.EventHandler(this.btnIgnore_Click);
             // 
             // btnIgnoreAll
             // 
@@ -59,6 +60,7 @@
             this.btnIgnoreAll.TabIndex = 1;
             this.btnIgnoreAll.Text = "نادیده گرفتن همه";
             this.btnIgnoreAll.UseVisualStyleBackColor = true;
+            this.btnIgnoreAll.Click += new System.EventHandler(this.btnIgnoreAll_Click);
             // 
             // btnChange
             // 
@@ -69,6 +71,7 @@
             this.btnChange.TabIndex = 2;
             this.btnChange.Text = "تغییر";
             this.btnChange.UseVisualStyleBackColor = true;
+            this.btnChange.Click += new System.EventHandler(this.btnChange_Click);
             // 
             // btnChangeAll
             // 
@@ -78,36 +81,38 @@
             this.btnChangeAll.TabIndex = 3;
             this.btnChangeAll.Text = "تغییر همه";
             this.btnChangeAll.UseVisualStyleBackColor = true;
+            this.btnChangeAll.Click += new System.EventHandler(this.btnChangeAll_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(12, 229);
+            this.btnCancel.Location = new System.Drawing.Point(12, 271);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(96, 23);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "انصراف";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // textBox1
+            // txtMisspelledWord
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(114, 27);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(261, 21);
-            this.textBox1.TabIndex = 5;
+            this.txtMisspelledWord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMisspelledWord.BackColor = System.Drawing.SystemColors.Control;
+            this.txtMisspelledWord.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtMisspelledWord.Enabled = false;
+            this.txtMisspelledWord.Location = new System.Drawing.Point(114, 27);
+            this.txtMisspelledWord.Name = "txtMisspelledWord";
+            this.txtMisspelledWord.Size = new System.Drawing.Size(261, 21);
+            this.txtMisspelledWord.TabIndex = 5;
             // 
-            // textBox2
+            // txtReplacement
             // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(114, 88);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(261, 21);
-            this.textBox2.TabIndex = 6;
+            this.txtReplacement.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtReplacement.Location = new System.Drawing.Point(114, 88);
+            this.txtReplacement.Name = "txtReplacement";
+            this.txtReplacement.Size = new System.Drawing.Size(261, 21);
+            this.txtReplacement.TabIndex = 6;
             // 
             // label1
             // 
@@ -136,9 +141,10 @@
             this.lstSuggestions.FormattingEnabled = true;
             this.lstSuggestions.Location = new System.Drawing.Point(114, 131);
             this.lstSuggestions.Name = "lstSuggestions";
-            this.lstSuggestions.Size = new System.Drawing.Size(261, 121);
+            this.lstSuggestions.Size = new System.Drawing.Size(261, 160);
             this.lstSuggestions.TabIndex = 9;
             this.lstSuggestions.SelectedIndexChanged += new System.EventHandler(this.lstSuggestions_SelectedIndexChanged);
+            this.lstSuggestions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lstSuggestions_MouseDoubleClick);
             // 
             // SpellingErrorDialog
             // 
@@ -146,12 +152,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(387, 262);
+            this.ClientSize = new System.Drawing.Size(387, 304);
             this.Controls.Add(this.lstSuggestions);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtReplacement);
+            this.Controls.Add(this.txtMisspelledWord);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnChangeAll);
             this.Controls.Add(this.btnChange);
@@ -161,8 +167,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SpellingErrorDialog";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "خطاهای املایی";
-            this.Load += new System.EventHandler(this.SpellingErrorDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -175,8 +181,8 @@
         private System.Windows.Forms.Button btnChange;
         private System.Windows.Forms.Button btnChangeAll;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtMisspelledWord;
+        private System.Windows.Forms.TextBox txtReplacement;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox lstSuggestions;

@@ -53,5 +53,19 @@ namespace VirastyarWLW.Tests
 
             Assert.AreEqual(finalText, stringRplc.Text);
         }
+
+        [Test]
+        public void StringReplacement_3()
+        {
+            const string referenceText = "سلوم به تو ای همیشگی ترین انسان روی زمین";
+            const string finalText = "سلام به تو ای همیشگی‌ترین انسان روی زمین";
+
+            var stringRplc = new StringReplacement(referenceText);
+
+            stringRplc.Replace(0, "سلوم".Length, "سلام");
+            stringRplc.Replace(referenceText.IndexOf("همیشگی ترین"), "همیشگی ترین".Length, "همیشگی‌ترین");
+
+            Assert.AreEqual(finalText, stringRplc.Text);
+        }
     }
 }

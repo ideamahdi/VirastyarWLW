@@ -7,6 +7,7 @@ using WindowsLive.Writer.Api;
 using System.Windows.Forms;
 using SCICT.NLP.TextProofing.SpellChecker;
 using SCICT.VirastyarInlineVerifiers;
+using System.Reflection;
 
 namespace VirastyarWLW
 {
@@ -14,19 +15,22 @@ namespace VirastyarWLW
         "8930534E-A5AA-4F20-8B78-AE6C0E425102",
         "Virastyar",
         ImagePath = "Virastyar.bmp",
+        PublisherUrl = "http://github.com/sharpedia",
         HasEditableOptions = true,
-        PublisherUrl = "http://sharpedia.wordpress.com",
         Description = "Virastyar WLW Plugin for Editing Persian Texts.\r\n افزونهٔ ویراستیار برای اصلاح نگارش متون فارسی در برنامهٔ لایو-رایتر")]
-
     [InsertableContentSourceAttribute("ویرایش متن فارسی")]
-    public class VirastyarWlwPlugin : ContentSource
+    public class VirastyarWLWplugin : ContentSource
     {
-        // TODO
-        private const string basePath = @"D:\Mehrdad\Works\Noor\Virastyar\virastyar@svn\Projects\SpellChecker\trunk\VirastyarWordAddin\VirastyarWordAddin\Resources";
-        
-        private PersianSpellChecker m_speller;
+        #region Private Fields
 
+        private string m_basePath;
+        private PersianSpellChecker m_speller;
         private Options m_options;
+        private ResourceManager m_resourceManger;
+
+        #endregion
+
+        #region Initialization Methods
 
         public override void Initialize(IProperties pluginOptions)
         {
@@ -36,16 +40,34 @@ namespace VirastyarWLW
             // And we'll use a wrapper instead 
             m_options = new Options(Options);
 
+            m_resourceManger = new ResourceManager(Assembly.GetAssembly(typeof(VirastyarWLWplugin)));
+
             #region Create SpellChecker
 
+            CheckDependencies();
+
             var config = new SpellCheckerConfig();
-            config.DicPath = Path.Combine(basePath, "dic.dat");
-            config.StemPath = Path.Combine(basePath, "stem.dat");
+            config.DicPath = Path.Combine(m_basePath, "Dic.dat");
+            config.StemPath = Path.Combine(m_basePath, "Stem.dat");
+            config.EditDistance = 2;
+            config.SuggestionCount = 10;
 
             m_speller = new PersianSpellChecker(config);
 
             #endregion
         }
+
+        private void CheckDependencies()
+        {
+            m_basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "VirastyarWLW");
+
+            m_resourceManger.CheckAndRestoreResource("Dic.dat", m_basePath);
+            m_resourceManger.CheckAndRestoreResource("Stem.dat", m_basePath);
+        }
+
+        #endregion
+
+        #region Plug-in Methods
 
         public override void EditOptions(IWin32Window dialogOwner)
         {
@@ -89,5 +111,7 @@ namespace VirastyarWLW
             content = stringReplacement.Text;
             return DialogResult.OK;
         }
+
+        #endregion
     }
 }

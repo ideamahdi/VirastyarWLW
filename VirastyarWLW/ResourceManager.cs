@@ -9,32 +9,56 @@ using System.Text;
 
 namespace VirastyarWLW
 {
-    class ResourceManager
+    internal class ResourceManager
     {
-        private static Assembly MainAssembly = null;
+        #region Private Fields
 
-        public static void Init(Assembly mainAssembly)
+        private Assembly m_mainAssembly = null;
+
+        #endregion
+
+        #region Ctors and Initializers
+
+        public ResourceManager()
+        {
+            
+        }
+
+        public ResourceManager(Assembly mainAssembly)
+        {
+            Init(mainAssembly);
+        }
+
+        public void Init(Assembly mainAssembly)
         {
             Debug.Assert(mainAssembly != null);
             if (mainAssembly == null)
             {
-                throw new ArgumentException("Main assembly must not be null!", "mainAssembly");
+                throw new ArgumentException("Main assembly should not be null!", "mainAssembly");
             }
-            ResourceManager.MainAssembly = mainAssembly;
+            m_mainAssembly = mainAssembly;
         }
 
-        public static Stream GetResource(string resourceName)
+        #endregion
+
+        #region Public Methods
+
+        public Stream GetResource(string resourceName)
         {
             CheckInitialized();
-            string fullResName = MainAssembly.FullName.Split(',')[0] + ".Resources." + resourceName;
-            return MainAssembly.GetManifestResourceStream(fullResName);
+            string fullResName = m_mainAssembly.FullName.Split(',')[0] + ".Resources." + resourceName;
+            return m_mainAssembly.GetManifestResourceStream(fullResName);
         }
 
-        public static bool SaveResourceAs(string resourceName, string destPath)
+        public bool SaveResourceAs(string resourceName, string destPath)
         {
-            // TODO: If directory does not exist
-
             CheckInitialized();
+
+            string dirPath = Path.GetDirectoryName(destPath);
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
             try
             {
                 Stream inputStream = GetResource(resourceName);
@@ -101,10 +125,25 @@ namespace VirastyarWLW
             return false;
         }
 
-        private static void CheckInitialized()
+        public void CheckAndRestoreResource(string resourceName, string basePath)
         {
-            if (MainAssembly == null)
+            string resourceFilePath = Path.Combine(basePath, resourceName);
+            if (!File.Exists(resourceFilePath))
+            {
+                SaveResourceAs(resourceName, resourceFilePath);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+        
+        private void CheckInitialized()
+        {
+            if (m_mainAssembly == null)
                 throw new InvalidOperationException("ResourceManager is not initialized");
         }
+
+        #endregion
     }
 }
