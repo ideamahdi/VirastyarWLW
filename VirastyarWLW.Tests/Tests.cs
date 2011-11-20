@@ -67,5 +67,29 @@ namespace VirastyarWLW.Tests
 
             Assert.AreEqual(finalText, stringRplc.Text);
         }
+
+        [Test]
+        public void StringReplacement_4()
+        {
+            const string referenceText = 
+@"<div dir=""rtl"">
+  <pre><font face=""Tahoma"">سلوم به <strong><em>تو</em></strong> ای <strong>همیشگی ترین</strong> انسان روی زمین
+</font></pre>
+</div>";
+            const string finalText =
+@"<div dir=""rtl"">
+  <pre><font face=""Tahoma"">خداحافظ به <strong><em>تو</em></strong> ای <strong>همیشگی‌ترین</strong> فرد روی ماه
+</font></pre>
+</div>";
+
+            var stringRplc = new StringReplacement(referenceText);
+
+            stringRplc.Replace(referenceText.IndexOf("سلوم"), "سلوم".Length, "خداحافظ");
+            stringRplc.Replace(referenceText.IndexOf("همیشگی ترین"), "همیشگی ترین".Length, "همیشگی‌ترین");
+            stringRplc.Replace(referenceText.IndexOf("انسان"), "انسان".Length, "فرد");
+            stringRplc.Replace(referenceText.IndexOf("زمین"), "زمین".Length, "ماه");
+
+            Assert.AreEqual(finalText, stringRplc.Text);
+        }
     }
 }

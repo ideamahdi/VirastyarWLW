@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace VirastyarWLW
@@ -13,7 +7,7 @@ namespace VirastyarWLW
     {
         #region Private Fields
 
-        private string m_replaceWord;
+        //private string m_replaceWord;
         private string m_misspelledWord;
 
         #endregion
@@ -76,12 +70,8 @@ namespace VirastyarWLW
 
         public string ReplaceWord
         {
-            get { return m_replaceWord; }
-            private set
-            {
-                m_replaceWord = value;
-                txtReplacement.Text = value;
-            }
+            get { return txtReplacement.Text; }
+            private set { txtReplacement.Text = value; }
         }
 
         public string MisspelledWord
