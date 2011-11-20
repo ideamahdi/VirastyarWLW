@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsLive.Writer.Api">
       <HintPath>..\..\..\..\..\Program Files (x86)\Windows Live\Writer\WindowsLive.Writer.Api.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

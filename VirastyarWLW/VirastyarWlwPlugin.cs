@@ -36,7 +36,7 @@ namespace VirastyarWLW
         {
             // This will set the Options property
             base.Initialize(pluginOptions);
-            
+
             // And we'll use a wrapper instead 
             m_options = new Options(Options);
 
@@ -79,35 +79,58 @@ namespace VirastyarWLW
             var verifier = new SpellCheckerInlineVerifier(false, m_speller);
             var stringReplacement = new StringReplacement(content);
 
+            VerificationInstance prevSpellError = null;
+            SpellDialogResult prevDialogResult = SpellDialogResult.Cancel;
+
             foreach (var spellError in verifier.VerifyText(content))
             {
                 bool shouldBreak = false;
-                string replacementWord;
+                bool shouldCheck = true;
                 string misspelledWord = content.Substring(spellError.Index, spellError.Length);
-                var dialogResult = SpellingErrorDialog.ShowForm(
-                    dialogOwner, misspelledWord, spellError.Suggestions, out replacementWord);
-                switch (dialogResult)
+                if (prevSpellError != null)
                 {
-                    case SpellDialogResult.Cancel:
-                        shouldBreak = true;
-                        break;
-                    case SpellDialogResult.Change:
-                        stringReplacement.Replace(spellError.Index, spellError.Length, replacementWord);
-                        break;
-                    case SpellDialogResult.ChangeAll:
-                        stringReplacement.Replace(misspelledWord, replacementWord);
-                        break;
-                    case SpellDialogResult.Ignore:
-                        break;
-                    case SpellDialogResult.IgnoreAll:
-                        m_speller.AddToIgnoreList(misspelledWord);
-                        break;
+                    if (prevSpellError.Index == spellError.Index &&
+                        prevSpellError.Length == spellError.Length &&
+                        (prevDialogResult == SpellDialogResult.Change || prevDialogResult == SpellDialogResult.ChangeAll))
+                        shouldCheck = false;
                 }
+
+                if (shouldCheck)
+                {
+                    string replacementWord;
+                    var dialogResult = SpellingErrorDialog.ShowForm(
+                        dialogOwner, misspelledWord, spellError.Suggestions, out replacementWord);
+
+                    switch (dialogResult)
+                    {
+                        case SpellDialogResult.Cancel:
+                            shouldBreak = true;
+                            break;
+                        case SpellDialogResult.Change:
+                            stringReplacement.Replace(spellError.Index, spellError.Length, replacementWord);
+                            break;
+                        case SpellDialogResult.ChangeAll:
+                            stringReplacement.Replace(misspelledWord, replacementWord);
+                            break;
+                        case SpellDialogResult.Ignore:
+                            break;
+                        case SpellDialogResult.IgnoreAll:
+                            m_speller.AddToIgnoreList(misspelledWord);
+                            break;
+                    }
+                    prevDialogResult = dialogResult;
+                }
+                else
+                {
+                    prevDialogResult = SpellDialogResult.Ignore;
+                }
+
+                prevSpellError = spellError;
 
                 if (shouldBreak)
                     break;
             }
-            
+
             content = stringReplacement.Text;
             return DialogResult.OK;
         }
