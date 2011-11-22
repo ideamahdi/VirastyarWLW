@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirastyarWLW", "VirastyarWL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirastyarWLW.Tests", "VirastyarWLW.Tests\VirastyarWLW.Tests.csproj", "{2350E104-B57B-4270-B198-4D3CA7B77053}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "VirastyarWLW.Setup", "VirastyarWLW.Setup\VirastyarWLW.Setup.vdproj", "{61C37047-853E-4BA1-9D0F-8EF436943F50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,8 @@ Global
 		{2350E104-B57B-4270-B198-4D3CA7B77053}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2350E104-B57B-4270-B198-4D3CA7B77053}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2350E104-B57B-4270-B198-4D3CA7B77053}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C37047-853E-4BA1-9D0F-8EF436943F50}.Debug|Any CPU.ActiveCfg = Debug
+		{61C37047-853E-4BA1-9D0F-8EF436943F50}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>VirastyarWLW.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="SCICT.NLP.TextProofing.SpellChecker">
       <HintPath>..\ExternalLibs\SCICT.NLP.TextProofing.SpellChecker.dll</HintPath>
@@ -89,6 +92,13 @@
     <None Include="app.config" />
     <EmbeddedResource Include="Resources\Dic.dat.zip" />
     <EmbeddedResource Include="Resources\Stem.dat.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SetupBanner.bmp" />
+    <Content Include="Virastyar.ico" />
+    <Content Include="VirastyarWLW.bmp" />
+    <Content Include="VirastyarWLW.ico" />
+    <Content Include="Windows-Live-Writer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

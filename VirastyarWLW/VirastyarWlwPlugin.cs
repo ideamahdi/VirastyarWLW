@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using SCICT.NLP.Utility;
+using SCICT.NLP.Utility.Parsers;
 using WindowsLive.Writer.Api;
 using System.Windows.Forms;
 using SCICT.NLP.TextProofing.SpellChecker;
@@ -14,11 +16,11 @@ namespace VirastyarWLW
 {
     [WriterPluginAttribute(
         "8930534E-A5AA-4F20-8B78-AE6C0E425102",
-        "Virastyar",
+        "Virastyar for WLW",
         ImagePath = "Virastyar.bmp",
         PublisherUrl = "http://github.com/sharpedia",
         HasEditableOptions = true,
-        Description = "Virastyar WLW Plugin for Editing Persian Texts.\r\n افزونهٔ ویراستیار برای اصلاح نگارش متون فارسی در برنامهٔ لایو-رایتر")]
+        Description = "Virastyar WLW Plugin for editing Persian texts.\r\n افزونهٔ ویراستیار برای اصلاح نگارش متون فارسی در برنامهٔ لایو-رایتر")]
     [InsertableContentSourceAttribute("ویرایش متن فارسی")]
     public class VirastyarWLWplugin : ContentSource
     {
@@ -76,6 +78,47 @@ namespace VirastyarWLW
         }
 
         public override DialogResult CreateContent(IWin32Window dialogOwner, ref string content)
+        {
+            #region Zero-Length Selected Text
+            if (content.Length == 0)
+            {
+                PersianMessageBox.Show(dialogOwner, "برای غلط‌یابی متن، ابتدا آن را انتخاب کنید", "انتخاب متن", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return DialogResult.Ignore;
+            }
+            #endregion
+
+            string newContent = content;
+            var msgs = new StringBuilder();
+            try
+            {
+                string message;
+                if (m_options.DoCharRefinement)
+                {
+                    newContent = StandardizeCharacters(newContent, out message);
+                    msgs.AppendLine(message);
+                }
+                if (m_options.DoSpellCheck)
+                {
+                    newContent = SpellCheck(dialogOwner, newContent, out message);
+                    msgs.Insert(0, string.Format("{0}{1}{2}{1}", message, Environment.NewLine, new string('-', 20)));
+                }
+                content = newContent;
+                PersianMessageBox.Show(dialogOwner, msgs.ToString(), "نتیجه", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Send Error and DO NOT REPLACE USER TEXT
+            }
+
+            return DialogResult.OK;
+        }
+
+        #endregion
+
+        #region Service Methods
+
+        private string SpellCheck(IWin32Window dialogOwner, string content, out string message)
         {
             var verifier = new SpellCheckerInlineVerifier(false, m_speller);
             var stringReplacement = new StringReplacement(content);
@@ -135,15 +178,21 @@ namespace VirastyarWLW
                     break;
             }
 
-            if (errorCount == 0)
-            {
-                PersianMessageBox.Show(dialogOwner, "هیچ خطایی در این متن پیدا نشد!", "تبریک", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-            content = stringReplacement.Text;
-            return DialogResult.OK;
+            message = string.Format("تعداد خطاهای املایی: {0}",  ParsingUtils.ConvertNumber2Persian(errorCount.ToString()));
+            return stringReplacement.Text;
         }
 
+        private string StandardizeCharacters(string content, out string message)
+        {
+            var verifier = new BatchCharacterRefinement();
+
+            var res = verifier.PerformBatchCharacterRefinement(content, new char[] { },
+                SCICT.NLP.Persian.FilteringCharacterCategory.ArabicDigit,
+                true, true, m_options.ConvertShortHeYeToLong, m_options.ConvertLongHeYeToShort);
+
+            message = res.Message;
+            return res.Result;
+        }
         #endregion
     }
 }

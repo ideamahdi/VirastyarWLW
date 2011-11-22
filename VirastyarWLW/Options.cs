@@ -38,5 +38,29 @@ namespace VirastyarWLW
                 m_options.SetBoolean("DoCharRefinement", value);
             }
         }
+
+        public bool ConvertLongHeYeToShort
+        {
+            get
+            {
+                return m_options.GetBoolean("ConvertLongHeYeToShort", true);
+            }
+            set
+            {
+                m_options.SetBoolean("ConvertLongHeYeToShort", value);
+            }
+        }
+
+        public bool ConvertShortHeYeToLong
+        {
+            get
+            {
+                return m_options.GetBoolean("ConvertShortHeYeToLong", true);
+            }
+            set
+            {
+                m_options.SetBoolean("ConvertShortHeYeToLong", value);
+            }
+        }
     }
 }
