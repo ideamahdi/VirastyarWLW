@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using SCICT.NLP.TextProofing.SpellChecker;
 using SCICT.VirastyarInlineVerifiers;
 using System.Reflection;
+using SCICT.Utility.GUI;
 
 namespace VirastyarWLW
 {
@@ -82,8 +83,11 @@ namespace VirastyarWLW
             VerificationInstance prevSpellError = null;
             SpellDialogResult prevDialogResult = SpellDialogResult.Cancel;
 
+            int errorCount = 0;
             foreach (var spellError in verifier.VerifyText(content))
             {
+                ++errorCount;
+
                 bool shouldBreak = false;
                 bool shouldCheck = true;
                 string misspelledWord = content.Substring(spellError.Index, spellError.Length);
@@ -129,6 +133,11 @@ namespace VirastyarWLW
 
                 if (shouldBreak)
                     break;
+            }
+
+            if (errorCount == 0)
+            {
+                PersianMessageBox.Show(dialogOwner, "هیچ خطایی در این متن پیدا نشد!", "تبریک", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             content = stringReplacement.Text;

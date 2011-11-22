@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace VirastyarWLW
 {
+    [DebuggerDisplay("{Text}")]
     public class StringReplacement
     {
-        private string m_text;
-
         private readonly List<TextRun> m_runs = new List<TextRun>();
 
         public StringReplacement(string text)
         {
-            m_text = text;
+            OriginalText = text;
             m_runs.Add(new TextRun(text));
         }
 
@@ -25,6 +25,17 @@ namespace VirastyarWLW
             }
         }
 
+        public string OriginalText
+        {
+            get;
+            private set;
+        }
+
+        public override string ToString()
+        {
+            return Text;
+        }
+
         public void Replace(int index, int length, string newValue)
         {
             var lengthSoFar = 0;
@@ -33,13 +44,12 @@ namespace VirastyarWLW
             for (int i = 0; i < m_runs.Count; i++)
             {
                 var textRun = m_runs[i];
-                if (index <= lengthSoFar + textRun.OriginalLength)
+                if (index < lengthSoFar + textRun.OriginalLength)
                 {
                     targetTextRun = textRun;
                     targetTextRunIndex = i;
                     break;
                 }
-                //int diff = textRun.Length - textRun.OriginalLength;
                 lengthSoFar += textRun.OriginalLength;
             }
 
@@ -64,6 +74,7 @@ namespace VirastyarWLW
         }
     }
 
+    [DebuggerDisplay("{Text}")]
     public class TextRun
     {
         public TextRun(string text)
@@ -100,8 +111,8 @@ namespace VirastyarWLW
 
         public IEnumerable<TextRun> Replace(int index, int length, string replacement)
         {
-            if (index + length > Length)
-                throw new ArgumentException();
+            //if (index + length > Length)
+            //    throw new ArgumentException();
 
             if (index > 0)
             {
@@ -138,6 +149,11 @@ namespace VirastyarWLW
 
             if (lastIndexOfRun < Text.Length - 1)
                 yield return new TextRun(Text.Substring(lastIndexOfRun, Text.Length - lastIndexOfRun));
+        }
+
+        public override string ToString()
+        {
+            return Text;
         }
     }
 
