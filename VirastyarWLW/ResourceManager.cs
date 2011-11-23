@@ -19,16 +19,27 @@ namespace VirastyarWLW
 
         #region Ctors and Initializers
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResourceManager"/> class.
+        /// </summary>
         public ResourceManager()
         {
             
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResourceManager"/> class.
+        /// </summary>
+        /// <param name="mainAssembly">The main assembly which contains the resources.</param>
         public ResourceManager(Assembly mainAssembly)
         {
             Init(mainAssembly);
         }
 
+        /// <summary>
+        /// Inits this instance with the given assembly instance as the main assembly.
+        /// </summary>
+        /// <param name="mainAssembly">The main assembly.</param>
         public void Init(Assembly mainAssembly)
         {
             Debug.Assert(mainAssembly != null);
@@ -43,6 +54,11 @@ namespace VirastyarWLW
 
         #region Public Methods
 
+        /// <summary>
+        /// Gets the resource stream from the embedded resources of the main assembly.
+        /// </summary>
+        /// <param name="resourceName">Name of the resource.</param>
+        /// <returns></returns>
         public Stream GetResource(string resourceName)
         {
             CheckInitialized();
@@ -50,6 +66,13 @@ namespace VirastyarWLW
             return m_mainAssembly.GetManifestResourceStream(fullResName);
         }
 
+        /// <summary>
+        /// Gets the resource stream from the embedded resources of the main assembly and saves 
+        /// it at the given path.
+        /// </summary>
+        /// <param name="resourceName">Name of the embedded resource.</param>
+        /// <param name="destPath">The destination path.</param>
+        /// <returns></returns>
         public bool SaveResourceAs(string resourceName, string destPath)
         {
             CheckInitialized();
@@ -125,6 +148,12 @@ namespace VirastyarWLW
             return false;
         }
 
+        /// <summary>
+        /// Checks if the given resource name exists at <paramref name="basePath"/>. 
+        /// If not, it restores the resource.
+        /// </summary>
+        /// <param name="resourceName">Name of the resource.</param>
+        /// <param name="basePath">The base path.</param>
         public void CheckAndRestoreResource(string resourceName, string basePath)
         {
             string resourceFilePath = Path.Combine(basePath, resourceName);

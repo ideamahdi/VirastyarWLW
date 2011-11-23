@@ -6,14 +6,27 @@ using WindowsLive.Writer.Api;
 
 namespace VirastyarWLW
 {
+    /// <summary>
+    /// A handy wrapper over an instance of <see cref="IProperties"/> class.
+    /// </summary>
     public class Options
     {
+        #region Private Fields
+
         private readonly IProperties m_options;
+
+        #endregion
+
+        #region Ctors
 
         public Options(IProperties options)
         {
             m_options = options;
         }
+
+        #endregion
+
+        #region Properties
 
         public bool DoSpellCheck
         {
@@ -24,6 +37,18 @@ namespace VirastyarWLW
             set
             {
                 m_options.SetBoolean("DoSpellCheck", value);
+            }
+        }
+
+        public bool DoPreSpellCheck
+        {
+            get
+            {
+                return m_options.GetBoolean("DoPreSpellCheck", true);
+            }
+            set
+            {
+                m_options.SetBoolean("DoPreSpellCheck", value);
             }
         }
 
@@ -55,12 +80,14 @@ namespace VirastyarWLW
         {
             get
             {
-                return m_options.GetBoolean("ConvertShortHeYeToLong", true);
+                return m_options.GetBoolean("ConvertShortHeYeToLong", false);
             }
             set
             {
                 m_options.SetBoolean("ConvertShortHeYeToLong", value);
             }
         }
+
+        #endregion
     }
 }

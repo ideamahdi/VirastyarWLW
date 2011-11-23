@@ -3,11 +3,13 @@ using System.Windows.Forms;
 
 namespace VirastyarWLW
 {
+    /// <summary>
+    /// Dialog for showing errors and errors to user.
+    /// </summary>
     public partial class SpellingErrorDialog : Form
     {
         #region Private Fields
 
-        //private string m_replaceWord;
         private string m_misspelledWord;
 
         #endregion
@@ -23,8 +25,15 @@ namespace VirastyarWLW
 
         #region Public Methods
 
+        /// <summary>
+        /// Creates an instance of this class with the given paramters and shows it.
+        /// </summary>
+        /// <param name="misspelledWord">The misspelled word.</param>
+        /// <param name="suggestions">Suggestions.</param>
+        /// <param name="replacementWord">The replacement word.</param>
+        /// <returns></returns>
         public static SpellDialogResult ShowForm(IWin32Window owner,
-            string misspelledWord, string[] suggestions, out string replaceWord)
+            string misspelledWord, string[] suggestions, out string replacementWord)
         {
             var dialog = new SpellingErrorDialog
                              {
@@ -33,11 +42,11 @@ namespace VirastyarWLW
                                  SpellDialogResult = SpellDialogResult.Cancel
                              };
             if (suggestions.Length > 0)
-                dialog.ReplaceWord = suggestions[0];
+                dialog.ReplacementWord = suggestions[0];
 
             dialog.ShowDialog(owner);
             
-            replaceWord = dialog.ReplaceWord;
+            replacementWord = dialog.ReplacementWord;
             return dialog.SpellDialogResult;
         }
 
@@ -45,6 +54,9 @@ namespace VirastyarWLW
 
         #region Properties
 
+        /// <summary>
+        /// Gets the user decision
+        /// </summary>
         public SpellDialogResult SpellDialogResult
         {
             get;
@@ -53,6 +65,9 @@ namespace VirastyarWLW
 
         private string[] m_suggestions;
 
+        /// <summary>
+        /// Gets the suggestions for this error
+        /// </summary>
         public string[] Suggestions
         {
             get { return m_suggestions; }
@@ -68,12 +83,18 @@ namespace VirastyarWLW
             }
         }
 
-        public string ReplaceWord
+        /// <summary>
+        /// Gets the replacement word.
+        /// </summary>
+        public string ReplacementWord
         {
             get { return txtReplacement.Text; }
             private set { txtReplacement.Text = value; }
         }
 
+        /// <summary>
+        /// Gets the misspelled word.
+        /// </summary>
         public string MisspelledWord
         {
             get { return m_misspelledWord; }

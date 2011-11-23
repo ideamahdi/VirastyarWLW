@@ -109,6 +109,11 @@
              Correct sticked Be to Be with white space (e.g. "بعنوان" to "به عنوان")
             </summary>
         </member>
+        <member name="F:SCICT.NLP.TextProofing.SpellChecker.OnePassCorrectionRules.CorrectSpacing">
+            <summary>
+             Correct spacing of words
+            </summary>
+        </member>
         <member name="T:SCICT.NLP.TextProofing.SpellChecker.PersianSpellCheckerConfig">
             <summary>
              configuration Class of Spell Checker

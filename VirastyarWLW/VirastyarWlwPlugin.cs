@@ -28,6 +28,8 @@ namespace VirastyarWLW
 
         private string m_basePath;
         private PersianSpellChecker m_speller;
+        private VerificationEngines m_engines;
+        private InlineVerificationController m_controller;
         private Options m_options;
         private ResourceManager m_resourceManger;
 
@@ -35,6 +37,10 @@ namespace VirastyarWLW
 
         #region Initialization Methods
 
+        /// <summary>
+        /// Initializes the specified plugin options.
+        /// </summary>
+        /// <param name="pluginOptions">The plugin options.</param>
         public override void Initialize(IProperties pluginOptions)
         {
             // This will set the Options property
@@ -49,17 +55,20 @@ namespace VirastyarWLW
 
             CheckDependencies();
 
-            var config = new SpellCheckerConfig();
-            config.DicPath = Path.Combine(m_basePath, "Dic.dat");
-            config.StemPath = Path.Combine(m_basePath, "Stem.dat");
-            config.EditDistance = 2;
-            config.SuggestionCount = 10;
+            m_engines = new VerificationEngines(
+                Path.Combine(m_basePath, "Dic.dat"), 
+                Path.Combine(m_basePath, "Stem.dat"), 
+                null, null, null);
 
-            m_speller = new PersianSpellChecker(config);
+            m_controller = new InlineVerificationController(m_engines);
+            m_speller = m_engines.GetSpellCheckerEngine();
 
             #endregion
         }
 
+        /// <summary>
+        /// Checks the dependencies.
+        /// </summary>
         private void CheckDependencies()
         {
             m_basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "VirastyarWLW");
@@ -77,12 +86,17 @@ namespace VirastyarWLW
             OptionsForm.ShowForm(dialogOwner, m_options);
         }
 
+        /// <summary>
+        /// The main method of Plugin.
+        /// </summary>
+        /// <param name="content">The selected portion of the text.</param>
+        /// <returns></returns>
         public override DialogResult CreateContent(IWin32Window dialogOwner, ref string content)
         {
             #region Zero-Length Selected Text
             if (content.Length == 0)
             {
-                PersianMessageBox.Show(dialogOwner, "برای غلط‌یابی متن، ابتدا آن را انتخاب کنید", "انتخاب متن", 
+                PersianMessageBox.Show(dialogOwner, "برای غلط‌یابی متن، ابتدا بخشی آن را انتخاب کنید", "انتخاب متن", 
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return DialogResult.Ignore;
             }
@@ -95,8 +109,13 @@ namespace VirastyarWLW
                 string message;
                 if (m_options.DoCharRefinement)
                 {
-                    newContent = StandardizeCharacters(newContent, out message);
+                    newContent = RefineCharacters(newContent, out message);
                     msgs.AppendLine(message);
+                }
+                if (m_options.DoPreSpellCheck)
+                {
+                    newContent = PreSpellCheck(dialogOwner, newContent, out message);
+                    msgs.Insert(0, string.Format("پیش‌پردازش املایی - {0}{1}{2}{1}", message, Environment.NewLine, new string('-', 20)));
                 }
                 if (m_options.DoSpellCheck)
                 {
@@ -118,61 +137,43 @@ namespace VirastyarWLW
 
         #region Service Methods
 
+        /// <summary>
+        /// Checks the spelling of the given string.
+        /// </summary>
         private string SpellCheck(IWin32Window dialogOwner, string content, out string message)
         {
             var verifier = new SpellCheckerInlineVerifier(false, m_speller);
             var stringReplacement = new StringReplacement(content);
 
-            VerificationInstance prevSpellError = null;
-            SpellDialogResult prevDialogResult = SpellDialogResult.Cancel;
-
             int errorCount = 0;
-            foreach (var spellError in verifier.VerifyText(content))
+            foreach (var spellError in m_controller.RemoveConflicts(verifier.VerifyText(content)))
             {
                 ++errorCount;
 
                 bool shouldBreak = false;
-                bool shouldCheck = true;
                 string misspelledWord = content.Substring(spellError.Index, spellError.Length);
-                if (prevSpellError != null)
-                {
-                    if (prevSpellError.Index == spellError.Index &&
-                        prevSpellError.Length == spellError.Length &&
-                        (prevDialogResult == SpellDialogResult.Change || prevDialogResult == SpellDialogResult.ChangeAll))
-                        shouldCheck = false;
-                }
 
-                if (shouldCheck)
-                {
-                    string replacementWord;
-                    var dialogResult = SpellingErrorDialog.ShowForm(
-                        dialogOwner, misspelledWord, spellError.Suggestions, out replacementWord);
+                string replacementWord;
+                var dialogResult = SpellingErrorDialog.ShowForm(
+                    dialogOwner, misspelledWord, spellError.Suggestions, out replacementWord);
 
-                    switch (dialogResult)
-                    {
-                        case SpellDialogResult.Cancel:
-                            shouldBreak = true;
-                            break;
-                        case SpellDialogResult.Change:
-                            stringReplacement.Replace(spellError.Index, spellError.Length, replacementWord);
-                            break;
-                        case SpellDialogResult.ChangeAll:
-                            stringReplacement.Replace(misspelledWord, replacementWord);
-                            break;
-                        case SpellDialogResult.Ignore:
-                            break;
-                        case SpellDialogResult.IgnoreAll:
-                            m_speller.AddToIgnoreList(misspelledWord);
-                            break;
-                    }
-                    prevDialogResult = dialogResult;
-                }
-                else
+                switch (dialogResult)
                 {
-                    prevDialogResult = SpellDialogResult.Ignore;
+                    case SpellDialogResult.Cancel:
+                        shouldBreak = true;
+                        break;
+                    case SpellDialogResult.Change:
+                        stringReplacement.Replace(spellError.Index, spellError.Length, replacementWord);
+                        break;
+                    case SpellDialogResult.ChangeAll:
+                        stringReplacement.Replace(misspelledWord, replacementWord);
+                        break;
+                    case SpellDialogResult.Ignore:
+                        break;
+                    case SpellDialogResult.IgnoreAll:
+                        m_speller.AddToIgnoreList(misspelledWord);
+                        break;
                 }
-
-                prevSpellError = spellError;
 
                 if (shouldBreak)
                     break;
@@ -182,7 +183,10 @@ namespace VirastyarWLW
             return stringReplacement.Text;
         }
 
-        private string StandardizeCharacters(string content, out string message)
+        /// <summary>
+        /// Refines and standardizes the characters of the given string.
+        /// </summary>
+        private string RefineCharacters(string content, out string message)
         {
             var verifier = new BatchCharacterRefinement();
 
@@ -192,6 +196,30 @@ namespace VirastyarWLW
 
             message = res.Message;
             return res.Result;
+        }
+
+        private string PreSpellCheck(IWin32Window dialogOwner, string content, out string message)
+        {
+            var dialogResult = PersianMessageBox.Show(dialogOwner, 
+                "ابتدا مرحلهٔ پیش‌پردازش املایی انجام شده و برخی از اشکال‌های متن به‌طور خودکار تصحیح خواهند شد." + Environment.NewLine +
+                "این عملیات ممکن است کمی طول بکشد. آیا موافقید؟" + Environment.NewLine + Environment.NewLine +
+                "از طریق تنظمیات می‌توانید این مرحله را فعال/غیرفعال کنید",
+                "پیش‌پردازش املایی", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.OK)
+            {
+                var result = m_controller.BatchPreSpellCheck(content,
+                    PreSpellCheckerUserOptions.RefinePrefix |
+                    PreSpellCheckerUserOptions.RefineSuffix | 
+                    PreSpellCheckerUserOptions.RefineBe);
+
+                message = result.Message;
+                return result.Result;
+            }
+            else
+            {
+                message = "";
+                return content;
+            }
         }
         #endregion
     }

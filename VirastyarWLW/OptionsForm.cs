@@ -10,9 +10,18 @@ using WindowsLive.Writer.Api;
 
 namespace VirastyarWLW
 {
+    /// <summary>
+    /// Options dialog for the Plugin
+    /// </summary>
     public partial class OptionsForm : Form
     {
+        #region Private Fields
+
         private readonly Options m_options;
+
+        #endregion
+
+        #region Ctors
 
         public OptionsForm()
         {
@@ -26,9 +35,14 @@ namespace VirastyarWLW
             UpdateUI();
         }
 
+        #endregion
+
+        #region Private Methods
+
         private void UpdateUI()
         {
             chkDoSpellCheck.Checked = m_options.DoSpellCheck;
+            chkDoPreSpellCheck.Checked = m_options.DoPreSpellCheck;
             chkDoCharRefinement.Checked = m_options.DoCharRefinement;
             cbConvertLongHeYeToShort.Checked = m_options.ConvertLongHeYeToShort;
             cbConvertShortHeYeToLong.Checked = m_options.ConvertShortHeYeToLong;
@@ -39,17 +53,26 @@ namespace VirastyarWLW
         private void UpdateConfig()
         {
             m_options.DoSpellCheck = chkDoSpellCheck.Checked;
+            m_options.DoPreSpellCheck = chkDoPreSpellCheck.Checked;
             m_options.DoCharRefinement = chkDoCharRefinement.Checked;
 
             m_options.ConvertLongHeYeToShort = cbConvertLongHeYeToShort.Checked;
             m_options.ConvertShortHeYeToLong = cbConvertShortHeYeToLong.Checked;
         }
 
-        internal static void ShowForm(IWin32Window dialogOwner, Options options)
+        #endregion
+
+        #region Public Methods
+
+        public static void ShowForm(IWin32Window dialogOwner, Options options)
         {
             var form = new OptionsForm(options);
             form.ShowDialog(dialogOwner);
         }
+
+        #endregion
+
+        #region Event Handlers
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -78,5 +101,6 @@ namespace VirastyarWLW
             }
         }
 
+        #endregion
     }
 }
