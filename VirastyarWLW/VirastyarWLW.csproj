@@ -22,6 +22,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>1591</NoWarn>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>VirastyarWLW.ico</ApplicationIcon>
@@ -56,7 +60,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsLive.Writer.Api">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Windows Live\Writer\WindowsLive.Writer.Api.dll</HintPath>
+      <HintPath>..\ExternalLibs\WindowsLive.Writer.Api.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

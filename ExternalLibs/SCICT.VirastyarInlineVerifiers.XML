@@ -10,5 +10,11 @@
             </summary>
             <param name="content">The content to search the pattern in.</param>
         </member>
+        <member name="T:VirastyarWordAddin.Verifiers.SpellCheckerVerification.SpellCheckerWithCache">
+            <summary>
+            A spell checker with cache capability. It caches the previous results and improves
+            the performance of checking process this way.
+            </summary>
+        </member>
     </members>
 </doc>
