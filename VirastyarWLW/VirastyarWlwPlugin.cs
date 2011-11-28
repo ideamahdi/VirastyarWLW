@@ -28,8 +28,8 @@ namespace VirastyarWLW
 
         private string m_basePath;
         private PersianSpellChecker m_speller;
-        private VerificationEngines m_engines;
-        private InlineVerificationController m_controller;
+        private VerificationEngines<PersianSpellCheckerWithCache> m_engines;
+        private InlineVerificationController<PersianSpellCheckerWithCache> m_controller;
         private Options m_options;
         private ResourceManager m_resourceManger;
 
@@ -55,19 +55,19 @@ namespace VirastyarWLW
 
             CheckDependencies();
 
-            m_engines = new VerificationEngines(
+            m_engines = new VerificationEngines<PersianSpellCheckerWithCache>(
                 Path.Combine(m_basePath, "Dic.dat"), 
                 Path.Combine(m_basePath, "Stem.dat"), 
                 null, null, null);
 
-            m_controller = new InlineVerificationController(m_engines);
+            m_controller = new InlineVerificationController<PersianSpellCheckerWithCache>(m_engines);
             m_speller = m_engines.GetSpellCheckerEngine();
 
             #endregion
         }
 
         /// <summary>
-        /// Checks the dependencies.
+        /// Checks the dependencies and restore missing ones.
         /// </summary>
         private void CheckDependencies()
         {

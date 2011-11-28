@@ -171,6 +171,12 @@
              This Class find and rank respelling suggestions for a incorrectly spelled word
             </summary>
         </member>
+        <member name="M:SCICT.NLP.TextProofing.SpellChecker.SpellCheckerEngine.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SCICT.NLP.TextProofing.SpellChecker.SpellCheckerEngine"/> class.
+            Before using this intance, you should call <see cref="M:SCICT.NLP.TextProofing.SpellChecker.SpellCheckerEngine.Reconfigure(SCICT.NLP.TextProofing.SpellChecker.SpellCheckerConfig)"/> to properly initialize the engine.
+            </summary>
+        </member>
         <member name="M:SCICT.NLP.TextProofing.SpellChecker.SpellCheckerEngine.#ctor(SCICT.NLP.TextProofing.SpellChecker.SpellCheckerConfig)">
             <summary>
              Class Constructor
@@ -179,7 +185,7 @@
         </member>
         <member name="M:SCICT.NLP.TextProofing.SpellChecker.SpellCheckerEngine.Reconfigure(SCICT.NLP.TextProofing.SpellChecker.SpellCheckerConfig)">
             <summary>
-            Reconfigure the engine
+            Reconfigures the engine
             </summary>
             <param name="sc">Spellchecker Configuration</param>
             <returns></returns>
